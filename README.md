@@ -22,5 +22,5 @@
    ```shell
     $ git add . # Add changes
     $ git commit -m "<your-message>" # Commit changes
-    $ git push --set-upstream origin <your-branch> # Push changes to remote
+    $ git push -u origin <your-branch> # git push -u origin duc
     ```
