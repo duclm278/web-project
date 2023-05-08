@@ -60,7 +60,7 @@ export default function Router() {
     {
       path: "learn",
       element: <Learning />,
-    },
+    }
   ]);
 
   return routes;

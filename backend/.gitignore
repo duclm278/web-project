@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/node
 # Edit at https://www.toptal.com/developers/gitignore?templates=node
 
+### Google API OAuth2 Credentials
+oauth2.keys.json
+
 ### Node ###
 # Logs
 logs
