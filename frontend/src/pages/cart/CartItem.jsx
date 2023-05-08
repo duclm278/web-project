@@ -3,7 +3,7 @@ import { Box, Button, Grid, Rating, Typography } from "@mui/material";
 export default function CartItem() {
   return (
     <>
-      <Grid container>
+      <Grid container spacing={3}>
         <Grid item xs={2}>
           <Box
             src="https://img-c.udemycdn.com/course/480x270/543600_64d1_4.jpg"
