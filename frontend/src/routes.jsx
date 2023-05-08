@@ -7,6 +7,7 @@ import Learning from "./pages/learn";
 import Login from "./pages/login";
 import Profile from "./pages/profile";
 import SearchResults from "./pages/search";
+import Upload from "./pages/upload";
 
 export default function Router() {
   const routes = useRoutes([
@@ -45,6 +46,10 @@ export default function Router() {
     {
       path: "learn",
       element: <Learning />,
+    },
+    {
+      path: "upload",
+      element: <Upload />,
     },
   ]);
 

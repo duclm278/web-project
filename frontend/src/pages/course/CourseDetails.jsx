@@ -1,5 +1,4 @@
 import { Box, Typography, Rating, Paper } from "@mui/material";
-import { Link } from "react-router-dom";
 import CheckIcon from "@mui/icons-material/Check";
 import CourseContent from "./CourseContent";
 
@@ -23,9 +22,6 @@ export default function CourseDetail() {
             1,716,556 students
           </Typography>
         </Box>
-        <Typography variant="body" component="p">
-          Created by <Link>Jose Portilla</Link>
-        </Typography>
       </Box>
       <Paper elevation={2} sx={{ marginY: 5 }}>
         <Typography variant="h5" component="h2" sx={{ marginLeft: 2 }}>
@@ -79,18 +75,9 @@ export default function CourseDetail() {
         <b>Course content</b>
       </Typography>
       <Typography variant="subtitle2" component="p">
-        23 sections • 155 lectures • 22h 13m total length
+        23 lessons • 22h 13m total length
       </Typography>
       <CourseContent sx={{ marginBottom: 5 }} />
-
-      <Typography variant="h5" component="h2">
-        <b>Requirements</b>
-      </Typography>
-      <Typography variant="body" component="p">
-        <ul>
-          <li>Access to a computer with an internet connection.</li>
-        </ul>
-      </Typography>
 
       <Typography variant="h5" component="h2">
         <b>Description</b>
