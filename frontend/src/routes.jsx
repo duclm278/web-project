@@ -50,11 +50,11 @@ export default function Router() {
       ],
     },
     {
-      path: "sign-in",
+      path: "login",
       element: <SignIn />,
     },
     {
-      path: "sign-up",
+      path: "register",
       element: <SignUp />,
     },
     {
