@@ -1,18 +1,14 @@
-import { useState } from "react";
+import { CssBaseline } from "@mui/material";
+import { BrowserRouter } from "react-router-dom";
 import "./App.css";
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import Router from "./routes";
 
 function App() {
-  const [counter, setCounter] = useState(0);
   return (
-    <>
-      <Typography variant="h2" gutterBottom component="h1">
-        My app
-      </Typography>
-      <Typography variant="h3" gutterBottom component="h2">
-        Current counter: {counter}
-      </Typography>
-    </>
+    <BrowserRouter>
+      <CssBaseline />
+      <Router />
+    </BrowserRouter>
   );
 }
 
