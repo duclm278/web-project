@@ -15,10 +15,13 @@ const courseSchema = new mongoose.Schema({
         required: true
     },
     lessons: [Lesson.schema],
-    rating: {
+    totalRating: {
         type: Number,
-        min: 1,
-        max: 5
+        default: 0
+    },
+    numRating: {
+        type: Number,
+        default: 0
     },
     studentsEnrolled: {
         type: Number,
