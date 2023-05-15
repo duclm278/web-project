@@ -1,4 +1,5 @@
-import { useRoutes } from "react-router-dom";
+import { Navigate, useRoutes } from "react-router-dom";
+import { useAuthContext } from "./hooks/useAuthContext";
 import Cart from "./pages/cart";
 import Checkout from "./pages/checkout";
 import Course from "./pages/course";
@@ -11,6 +12,8 @@ import SearchResults from "./pages/search";
 import Signup from "./pages/signup";
 
 export default function Router() {
+  const { user } = useAuthContext();
+
   const routes = useRoutes([
     {
       path: "/",
@@ -30,23 +33,23 @@ export default function Router() {
     },
     {
       path: "cart",
-      element: <Cart />,
+      element: user ? <Cart /> : <Navigate to="/login" />,
     },
     {
       path: "checkout",
-      element: <Checkout />,
+      element: user ? <Checkout /> : <Navigate to="/login" />,
     },
     {
       path: "profile",
-      element: <Profile />,
+      element: user ? <Profile /> : <Navigate to="/login" />,
     },
     {
       path: "login",
-      element: <Login />,
+      element: !user ? <Login /> : <Navigate to="/" />,
     },
     {
       path: "signup",
-      element: <Signup />,
+      element: !user ? <Signup /> : <Navigate to="/" />,
     },
     {
       path: "logout",
@@ -54,8 +57,8 @@ export default function Router() {
     },
     {
       path: "learn",
-      element: <Learning />,
-    }
+      element: user ? <Learning /> : <Navigate to="/login" />,
+    },
   ]);
 
   return routes;
