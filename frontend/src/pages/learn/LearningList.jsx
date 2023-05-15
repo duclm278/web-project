@@ -1,11 +1,14 @@
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import {
   Checkbox,
+  Divider,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import * as React from "react";
 
 const lessons = [
   {
@@ -98,29 +101,39 @@ const lessons = [
   },
 ];
 
-// List with checkboxes
 export default function LearningList() {
   return (
-    <List>
+    <List
+      sx={{
+        bgcolor: "background.paper",
+      }}
+    >
       {lessons.map((lesson) => (
-        <ListItem key={lesson.id} disablePadding>
-          <ListItemButton>
-            <ListItemIcon>
-              <Checkbox
-                edge="start"
-                checked={lesson.watched}
-                tabIndex={-1}
-                disableRipple
-                inputProps={{ "aria-labelledby": lesson.id }}
+        <React.Fragment key={lesson.id}>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon sx={{ alignSelf: "flex-start" }}>
+                <Checkbox
+                  checked={lesson.watched}
+                  tabIndex={-1}
+                  disableRipple
+                  inputProps={{ "aria-labelledby": lesson.id }}
+                />
+              </ListItemIcon>
+              <ListItemText
+                id={lesson.id}
+                primary={lesson.title}
+                secondary={
+                  <span style={{ display: "flex", alignItems: "center" }}>
+                    <PlayCircleIcon sx={{ fontSize: 13.5, marginRight: 4 }} />
+                    {lesson.length}
+                  </span>
+                }
               />
-            </ListItemIcon>
-            <ListItemText
-              id={lesson.id}
-              primary={lesson.title}
-              secondary={lesson.length}
-            />
-          </ListItemButton>
-        </ListItem>
+            </ListItemButton>
+          </ListItem>
+          {/* <Divider variant="inset" component="li" /> */}
+        </React.Fragment>
       ))}
     </List>
   );
