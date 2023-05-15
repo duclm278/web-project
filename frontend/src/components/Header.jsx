@@ -1,9 +1,9 @@
 import AdbIcon from "@mui/icons-material/Adb";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Badge } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
@@ -19,6 +19,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { alpha, styled } from "@mui/material/styles";
 import * as React from "react";
+import { Link } from "react-router-dom";
 
 const pages = [
   { title: "Home", path: "/" },
@@ -150,7 +151,17 @@ function ResponsiveAppBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page.title} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page.title}</Typography>
+                  <Typography textAlign="center">
+                    <Link
+                      to={page.path}
+                      style={{
+                        color: "inherit",
+                        textDecoration: "none",
+                      }}
+                    >
+                      {page.title}
+                    </Link>
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -183,7 +194,15 @@ function ResponsiveAppBar() {
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page.title}
+                <Link
+                  to={page.path}
+                  style={{
+                    color: "inherit",
+                    textDecoration: "none",
+                  }}
+                >
+                  {page.title}
+                </Link>
               </Button>
             ))}
           </Box>
@@ -255,7 +274,17 @@ function ResponsiveAppBar() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting.title} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting.title}</Typography>
+                  <Typography textAlign="center">
+                    <Link
+                      to={setting.path}
+                      style={{
+                        color: "inherit",
+                        textDecoration: "none",
+                      }}
+                    >
+                      {setting.title}
+                    </Link>
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
