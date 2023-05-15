@@ -7,7 +7,8 @@ router.get("/", async (req, res) => {
     try {
         const carts = await cartModel.find({});
         res.status(200).json(carts);
-    } catch {
+    } catch (e) {
+        console.log(e);
         res.status(500).json({ error: "Could not get carts" });
     }
 });
@@ -16,8 +17,9 @@ router.get("/:id", async (req, res) => {
     try {
         const cart = await cartModel.find({ userId: id });
         res.status(200).json(cart);
-    } catch {
-        res.status(400).json({ error: "Could not retrieve cart" });
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ error: "Could not retrieve cart" });
     }
 });
 
