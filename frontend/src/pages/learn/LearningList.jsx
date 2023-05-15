@@ -1,7 +1,6 @@
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import {
   Checkbox,
-  Divider,
   List,
   ListItem,
   ListItemButton,
@@ -103,21 +102,16 @@ const lessons = [
 
 export default function LearningList() {
   return (
-    <List
-      sx={{
-        bgcolor: "background.paper",
-      }}
-    >
+    <List>
       {lessons.map((lesson) => (
         <React.Fragment key={lesson.id}>
           <ListItem disablePadding>
             <ListItemButton>
-              <ListItemIcon sx={{ alignSelf: "flex-start" }}>
+              <ListItemIcon>
                 <Checkbox
                   checked={lesson.watched}
                   tabIndex={-1}
                   disableRipple
-                  inputProps={{ "aria-labelledby": lesson.id }}
                 />
               </ListItemIcon>
               <ListItemText
@@ -125,14 +119,13 @@ export default function LearningList() {
                 primary={lesson.title}
                 secondary={
                   <span style={{ display: "flex", alignItems: "center" }}>
-                    <PlayCircleIcon sx={{ fontSize: 13.5, marginRight: 4 }} />
+                    <PlayCircleIcon sx={{ fontSize: 13.5, mr: 0.5 }} />
                     {lesson.length}
                   </span>
                 }
               />
             </ListItemButton>
           </ListItem>
-          {/* <Divider variant="inset" component="li" /> */}
         </React.Fragment>
       ))}
     </List>
