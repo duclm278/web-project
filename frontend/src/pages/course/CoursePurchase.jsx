@@ -6,14 +6,13 @@ import {
   Button,
   Box,
 } from "@mui/material";
+import PropTypes from "prop-types";
+import { formatPrice } from "../../utils/formatter";
 
-export default function CoursePurchase() {
+export default function CoursePurchase(props) {
   return (
     <Card sx={{ maxWidth: 400 }}>
-      <CardMedia
-        sx={{ height: 400 }}
-        image="https://play-lh.googleusercontent.com/wwJX4r_xJD7zv8uqs7C8mvy-KkngaSzyvCf2ZiULy3l-1sbBY2t1jHFZ_bgF8eO_PpU"
-      />
+      <CardMedia height="120" component="img" src={props.image} />
       <CardContent>
         <Box
           paddingY={2}
@@ -22,7 +21,7 @@ export default function CoursePurchase() {
           flexDirection={"column"}
         >
           <Typography variant="h4" component="h2" textAlign={"center"}>
-            <b>₫449,000</b>
+            <b>₫{formatPrice(props.price)}</b>
           </Typography>
           <Button variant="contained" sx={{ marginY: 2 }}>
             Add to cart
@@ -33,3 +32,8 @@ export default function CoursePurchase() {
     </Card>
   );
 }
+
+CoursePurchase.propTypes = {
+  image: PropTypes.string,
+  price: PropTypes.number,
+};

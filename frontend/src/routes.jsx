@@ -28,7 +28,7 @@ export default function Router() {
       element: <SearchResults />,
     },
     {
-      path: "course",
+      path: "course/:courseId",
       element: <Course />,
     },
     {

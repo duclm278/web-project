@@ -13,10 +13,13 @@ router.post("/", async (req, res) => {
     playlistUrl = parts[parts.length - 1];
     let course = await getCourseDetails(playlistUrl);
 
+    if (!course) {
+        res.status(400).json({ error: "Could not upload course" });
+    }
+
     course.price = req.body.price;
     course.coverImage = req.body.coverImage;
 
-    console.log(course);
     try {
         const savedCourse = await courseModel.create(course);
         res.status(201).json(savedCourse);
