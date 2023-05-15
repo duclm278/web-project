@@ -37,21 +37,21 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-// Protect next routes
+// Protect below routes
 router.use(requireAuth);
 
 // Profile route
 router.get("/profile", async (req, res) => {
-  const user = await User.findById(req.user);
-  if (!user) {
+  if (!req.user) {
     return res.status(404).send("No such user");
   }
 
-  res.status(200).json(user);
+  res.status(200).json(req.user);
 });
 
 router.patch("/profile", async (req, res) => {
-  const user = await User.findByIdAndUpdate(id, req.body, { new: true });
+  const { _id } = req.user;
+  const user = await User.findByIdAndUpdate(_id, req.body, { new: true });
   if (!user) {
     return res.status(404).send("No such user");
   }
