@@ -1,11 +1,18 @@
 import { Admin, Resource } from "react-admin";
 import restProvider from "ra-data-simple-rest";
 import CourseList from "./components/CourseList";
+import CourseCreate from "./components/CourseCreate";
+import CourseEdit from "./components/CourseEdit";
 
 function App() {
   return (
     <Admin dataProvider={restProvider("http://localhost:3001/api")}>
-      <Resource name="courses" list={CourseList} />
+      <Resource
+        name="courses"
+        list={CourseList}
+        create={CourseCreate}
+        edit={CourseEdit}
+      />
     </Admin>
   );
 }
