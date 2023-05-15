@@ -13,34 +13,40 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSignup } from "../../hooks/useSignup";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="#">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
+function newEmptyFormData() {
+  return {
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  };
 }
 
 export default function Signup() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState(newEmptyFormData);
   const signup = useSignup();
   const navigate = useNavigate();
+
+  const handleFormChange = (...args) => {
+    let fieldName = null;
+    let fieldValue = null;
+    if (args.length === 1) {
+      const e = args[0];
+      fieldName = e.target.name;
+      fieldValue = e.target.value;
+    } else if (args.length > 1) {
+      [fieldName, fieldValue] = args;
+    }
+
+    const newFormData = { ...formData };
+    newFormData[fieldName] = fieldValue;
+    setFormData(newFormData);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await signup(email, password);
+      await signup(formData);
       navigate("/login");
     } catch (err) {
       console.log("err", err);
@@ -74,6 +80,8 @@ export default function Signup() {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                value={formData.firstName}
+                onChange={(e) => handleFormChange(e)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -84,6 +92,8 @@ export default function Signup() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="family-name"
+                value={formData.lastName}
+                onChange={(e) => handleFormChange(e)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -94,7 +104,8 @@ export default function Signup() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={(e) => handleFormChange(e)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -106,7 +117,8 @@ export default function Signup() {
                 type="password"
                 id="password"
                 autoComplete="new-password"
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                onChange={(e) => handleFormChange(e)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -135,5 +147,23 @@ export default function Signup() {
       </Box>
       <Copyright sx={{ mt: 5 }} />
     </Container>
+  );
+}
+
+function Copyright(props) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
+      <Link color="inherit" href="#">
+        Your Website
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
   );
 }

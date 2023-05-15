@@ -4,8 +4,8 @@ import { useAuthContext } from "./useAuthContext";
 export const useSignup = () => {
   const { dispatch } = useAuthContext();
 
-  const signup = async (email, password) => {
-    const response = await userService.signup(email, password);
+  const signup = async (data) => {
+    const response = await userService.signup(data);
     // Save user to local storage
     localStorage.setItem("user", JSON.stringify(response));
 
