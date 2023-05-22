@@ -32,14 +32,14 @@ export default function Learning() {
     }
   });
 
-  const firstLessonId = lessons?.[0]?._id;
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     const token = user.token;
 
+    let course;
     const fetchCourse = async () => {
       try {
-        const course = await courseService.getOne(token, courseId);
+        course = await courseService.getOne(token, courseId);
         setLessons(course.lessons);
       } catch (err) {
         console.log(err);
@@ -51,6 +51,7 @@ export default function Learning() {
         const progress = await progressService.getOne(token, courseId);
         setCompletedLessons(progress.completedLessons);
         if (!progress.currentLesson) {
+          const firstLessonId = course.lessons?.[0]?._id;
           setCurrentLessonId(firstLessonId);
         } else {
           setCurrentLessonId(progress.currentLesson);
@@ -62,8 +63,41 @@ export default function Learning() {
 
     fetchCourse();
     fetchProgress();
-  }, [courseId, firstLessonId]);
+  }, [courseId]);
 
+  const handleOnEnded = async (lessonId) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = user.token;
+
+    // Mark lesson as completed if not already
+    let completedLessonIds;
+    if (completedLessons.includes(lessonId)) {
+      completedLessonIds = [...completedLessons];
+    } else {
+      completedLessonIds = [...completedLessons, lessonId];
+    }
+
+    // Set next lesson as current lesson to watch
+    const currentLessonIndex = lessons.findIndex(
+      (lesson) => lesson._id === lessonId
+    );
+    const nextLessonId =
+      lessons?.[currentLessonIndex + 1]?._id || currentLessonId;
+
+    // Update progress
+    try {
+      const progress = await progressService.update(token, courseId, {
+        currentLesson: nextLessonId,
+        completedLessons: completedLessonIds,
+      });
+      setCurrentLessonId(progress.currentLesson);
+      setCompletedLessons(progress.completedLessons);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  console.log("completedLessons", completedLessons);
   return (
     <Box>
       <Header />
@@ -72,6 +106,7 @@ export default function Learning() {
           <Box sx={{ p: { xs: 1, md: 2 }, overflow: "auto" }}>
             <LearningVideo
               lesson={lessons.find((lesson) => lesson._id === currentLessonId)}
+              onEnded={() => handleOnEnded(currentLessonId)}
             />
           </Box>
         </Stack>

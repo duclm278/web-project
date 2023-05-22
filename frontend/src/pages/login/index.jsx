@@ -55,7 +55,8 @@ export default function Login() {
         sm={4}
         md={7}
         sx={{
-          backgroundImage: "url(https://source.unsplash.com/random?macbook)",
+          backgroundImage:
+            "url(https://source.unsplash.com/random?macbook&fm=jpg&w=400&fit=max)",
           backgroundRepeat: "no-repeat",
           backgroundColor: (t) =>
             t.palette.mode === "light"
