@@ -20,6 +20,7 @@ export default function LearningVideo() {
       >
         <ReactPlayer
           url="https://www.youtube.com/watch?v=7CqJlxBYj-M"
+          origin={window.location.origin}
           controls
           width="100%"
           height="100%"
