@@ -6,6 +6,10 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
     email: {
       type: String,
       required: true,
@@ -23,9 +27,15 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    birthDate: {
+    birthday: {
       type: Date,
     },
+    joinedCourses: [
+      {
+        courseId: String,
+        completedLessons: [String],
+      },
+    ],
   },
   { timestamps: true }
 );
@@ -60,14 +70,16 @@ userSchema.statics.signup = async function (data) {
 };
 
 // Static login method
-userSchema.statics.login = async function (email, password) {
+userSchema.statics.login = async function (data) {
+  const { email, password } = data;
+
   if (!email || !password) {
     throw Error("All fields must be filled");
   }
 
   const user = await this.findOne({ email });
   if (!user) {
-    throw Error("Incorrect email");
+    throw Error("Email not found");
   }
 
   const match = await bcrypt.compare(password, user.password);
@@ -75,13 +87,7 @@ userSchema.statics.login = async function (email, password) {
     throw Error("Incorrect password");
   }
 
-  return {
-    _id: user._id,
-    email: user.email,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    birthDate: user.birthDate,
-  };
+  return user;
 };
 
 module.exports = mongoose.model("User", userSchema);
