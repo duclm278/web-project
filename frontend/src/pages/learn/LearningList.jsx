@@ -36,22 +36,11 @@ export default function LearningList({
   };
 
   const handleToggle = (lessonId) => {
-    const currentIndex = completedLessons.indexOf(lessonId);
-    let newCompletedLessons = [];
-
-    // Maintain order of lessons
-    if (currentIndex === -1) {
-      lessons.forEach((lesson) => {
-        if (lesson._id === lessonId) {
-          newCompletedLessons.push(lessonId);
-        } else if (completedLessons.includes(lesson._id)) {
-          newCompletedLessons.push(lesson._id);
-        }
-      });
+    let completedLessonIds = [];
+    if (completedLessons.includes(lessonId)) {
+      completedLessonIds = completedLessons.filter((id) => id !== lessonId);
     } else {
-      newCompletedLessons = completedLessons.filter(
-        (lesson) => lesson !== lessonId
-      );
+      completedLessonIds = [...completedLessons, lessonId];
     }
 
     const request = async () => {
@@ -60,7 +49,7 @@ export default function LearningList({
         const token = user.token;
         const progress = await progressService.update(token, courseId, {
           currentLesson: currentLessonId,
-          completedLessons: newCompletedLessons,
+          completedLessons: completedLessonIds,
         });
         setCompletedLessons(progress.completedLessons);
       } catch (err) {
