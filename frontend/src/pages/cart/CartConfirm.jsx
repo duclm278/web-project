@@ -6,8 +6,10 @@ import {
   Button,
   TextField,
 } from "@mui/material";
+import PropTypes from "prop-types";
+import { formatPrice } from "../../utils/formatter";
 
-export default function CartConfirm() {
+export default function CartConfirm(props) {
   return (
     <Card sx={{ marginTop: 8 }}>
       <CardContent>
@@ -16,7 +18,7 @@ export default function CartConfirm() {
             <b>Total:</b>
           </Typography>
           <Typography variant="h3" component="h2" sx={{ marginY: 3 }}>
-            <b>₫349,000</b>
+            <b>₫{formatPrice(props.cart?.subtotal ?? 0)}</b>
           </Typography>
           <Button variant="contained" sx={{ paddingY: 2 }} fullWidth>
             <b>Checkout</b>
@@ -40,3 +42,7 @@ export default function CartConfirm() {
     </Card>
   );
 }
+
+CartConfirm.propTypes = {
+  cart: PropTypes.object,
+};

@@ -2,10 +2,25 @@ import { Box, Button, Grid, Rating, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import courseService from "../../services/course";
+import cartService from "../../services/cart";
 import { formatPrice } from "../../utils/formatter";
 
 export default function CartItem(props) {
   const [course, setCourse] = useState({});
+  const removeFromCart = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      await cartService.removeFromCart(
+        user._id,
+        course.id,
+        course.price,
+        user.token
+      );
+    } catch (e) {
+      console.log(e);
+      alert(e);
+    }
+  };
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -49,12 +64,14 @@ export default function CartItem(props) {
             {course.lessons?.length ?? 0} lectures
           </Typography>
           <Box display={"flex"}>
-            <Button variant="text">Remove</Button>
+            <Button onClick={removeFromCart} variant="text">
+              Remove
+            </Button>
           </Box>
         </Grid>
         <Grid item xs={2}>
           <Typography variant="h5" component="h5">
-            <b>₫{formatPrice(course.price)}</b>
+            <b>₫{formatPrice(course?.price ?? 0)}</b>
           </Typography>
         </Grid>
       </Grid>
