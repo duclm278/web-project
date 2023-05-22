@@ -7,122 +7,97 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import * as React from "react";
+import React from "react";
+import { useParams } from "react-router-dom";
+import progressService from "../../services/progress";
+import { formatTime } from "../../utils/formatter";
 
-const lessons = [
-  {
-    id: 1,
-    title: "Introduction",
-    description: "Introduction to React",
-    video: "https://www.youtube.com/embed/7CqJlxBYj-M",
-    length: "5:08",
-    watched: true,
-  },
-  {
-    id: 2,
-    title: "What is React?",
-    description: "What is React?",
-    video: "https://www.youtube.com/embed/7CqJlxBYj-M",
-    length: "5:08",
-    watched: false,
-  },
-  {
-    id: 3,
-    title: "Why React?",
-    description: "Why React?",
-    video: "https://www.youtube.com/embed/7CqJlxBYj-M",
-    length: "5:08",
-    watched: true,
-  },
-  {
-    id: 4,
-    title: "React vs Angular vs Vue",
-    description: "React vs Angular vs Vue",
-    video: "https://www.youtube.com/embed/7CqJlxBYj-M",
-    length: "5:08",
-    watched: true,
-  },
-  {
-    id: 5,
-    title: "React vs Angular vs Vue",
-    description: "React vs Angular vs Vue",
-    video: "https://www.youtube.com/embed/7CqJlxBYj-M",
-    length: "5:08",
-    watched: false,
-  },
-  {
-    id: 6,
-    title: "React vs Angular vs Vue",
-    description: "React vs Angular vs Vue",
-    video: "https://www.youtube.com/embed/7CqJlxBYj-M",
-    length: "5:08",
-    watched: false,
-  },
-  {
-    id: 7,
-    title: "React vs Angular vs Vue",
-    description: "React vs Angular vs Vue",
-    video: "https://www.youtube.com/embed/7CqJlxBYj-M",
-    length: "5:08",
-    watched: false,
-  },
-  {
-    id: 8,
-    title: "React vs Angular vs Vue",
-    description: "React vs Angular vs Vue",
-    video: "https://www.youtube.com/embed/7CqJlxBYj-M",
-    length: "5:08",
-    watched: false,
-  },
-  {
-    id: 9,
-    title: "React vs Angular vs Vue",
-    description: "React vs Angular vs Vue",
-    video: "https://www.youtube.com/embed/7CqJlxBYj-M",
-    length: "5:08",
-    watched: false,
-  },
-  {
-    id: 10,
-    title: "React vs Angular vs Vue",
-    description: "React vs Angular vs Vue",
-    video: "https://www.youtube.com/embed/7CqJlxBYj-M",
-    length: "5:08",
-    watched: false,
-  },
-  {
-    id: 11,
-    title: "React vs Angular vs Vue",
-    description: "React vs Angular vs Vue",
-    video: "https://www.youtube.com/embed/7CqJlxBYj-M",
-    length: "5:08",
-    watched: true,
-  },
-];
+export default function LearningList({
+  lessons,
+  completedLessons,
+  setCompletedLessons,
+  currentLessonId,
+  setCurrentLessonId,
+}) {
+  const { courseId } = useParams();
 
-export default function LearningList() {
+  const handleWatch = async (lessonId) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = user.token;
+    try {
+      await progressService.update(token, courseId, {
+        currentLesson: lessonId,
+        completedLessons,
+      });
+      setCurrentLessonId(lessonId);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleToggle = (lessonId) => {
+    const currentIndex = completedLessons.indexOf(lessonId);
+    let newCompletedLessons = [];
+
+    // Maintain order of lessons
+    if (currentIndex === -1) {
+      lessons.forEach((lesson) => {
+        if (lesson._id === lessonId) {
+          newCompletedLessons.push(lessonId);
+        } else if (completedLessons.includes(lesson._id)) {
+          newCompletedLessons.push(lesson._id);
+        }
+      });
+    } else {
+      newCompletedLessons = completedLessons.filter(
+        (lesson) => lesson !== lessonId
+      );
+    }
+
+    const request = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const token = user.token;
+        const progress = await progressService.update(token, courseId, {
+          currentLesson: currentLessonId,
+          completedLessons: newCompletedLessons,
+        });
+        setCompletedLessons(progress.completedLessons);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    request();
+  };
+
   return (
     <List>
       {lessons.map((lesson) => (
-        <React.Fragment key={lesson.id}>
+        <React.Fragment key={lesson._id}>
           <ListItem disablePadding>
-            <ListItemButton>
+            <ListItemButton
+              selected={currentLessonId === lesson._id}
+              autoFocus={currentLessonId === lesson._id}
+            >
               <ListItemIcon>
                 <Checkbox
-                  checked={lesson.watched}
+                  checked={completedLessons.includes(lesson._id)}
                   tabIndex={-1}
                   disableRipple
+                  onClick={() => handleToggle(lesson._id)}
                 />
               </ListItemIcon>
               <ListItemText
                 id={lesson.id}
-                primary={lesson.title}
+                primary={lesson.name}
                 secondary={
                   <span style={{ display: "flex", alignItems: "center" }}>
                     <PlayCircleIcon sx={{ fontSize: 13.5, mr: 0.5 }} />
-                    {lesson.length}
+                    {formatTime(lesson.lengthSeconds)}
                   </span>
                 }
+                onClick={() => handleWatch(lesson._id)}
               />
             </ListItemButton>
           </ListItem>

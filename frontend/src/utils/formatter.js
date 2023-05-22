@@ -1,9 +1,13 @@
 export function formatTime(seconds) {
-    const minutePart = Math.floor(seconds / 60);
-    const secondPart = seconds % 60;
-    return `${minutePart}:${secondPart}`
+  if (seconds < 60) {
+    return `${seconds}s`;
+  } else if (seconds < 3600) {
+    return new Date(seconds * 1000).toISOString().slice(14, 19);
+  } else {
+    return new Date(seconds * 1000).toISOString().slice(11, 19);
+  }
 }
 
 export function formatPrice(price) {
-    return price.toLocaleString();
+  return price.toLocaleString();
 }

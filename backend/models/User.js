@@ -30,12 +30,19 @@ const userSchema = new Schema(
     birthday: {
       type: Date,
     },
-    joinedCourses: [
-      {
-        courseId: String,
-        completedLessons: [String],
-      },
-    ],
+    joinedCourses: {
+      type: [
+        {
+          courseId: String,
+          currentLesson: String,
+          completedLessons: {
+            type: [String],
+            default: [],
+          },
+        },
+      ],
+      default: [],
+    },
   },
   { timestamps: true }
 );

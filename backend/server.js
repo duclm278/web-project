@@ -18,6 +18,8 @@ const orderRouter = require("./routes/order");
 const uploadRouter = require("./routes/upload");
 const adminRouter = require("./routes/admin");
 const userRouter = require("./routes/user");
+const enrollRouter = require("./routes/enroll");
+const progressRouter = require("./routes/progress");
 
 app.use("/api/courses", courseRouter);
 app.use("/api/carts", cartRouter);
@@ -25,6 +27,8 @@ app.use("/api/orders", orderRouter);
 app.use("/api/upload", uploadRouter);
 app.use("/api/admins", adminRouter);
 app.use("/api/users", userRouter);
+app.use("/api/enroll", enrollRouter);
+app.use("/api/progress", progressRouter);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);

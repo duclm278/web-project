@@ -1,25 +1,28 @@
 import { Avatar, Box, Container, Grid, Paper, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import enrollService from "../../services/enroll";
 import { ProfileForm } from "./ProfileForm";
-
-const joinedCourses = [
-  {
-    id: 1,
-    title: "React - The Complete Guide (incl Hooks, React Router, Redux)",
-    description:
-      "Dive in and learn React.js from scratch! Learn Reactjs, Hooks, Redux, React Routing, Animations, Next.js and way more!",
-    image: "https://source.unsplash.com/featured/300x200",
-  },
-  {
-    id: 2,
-    title: "The Complete JavaScript Course 2021: From Zero to Expert!",
-    description:
-      "The modern JavaScript course for everyone! Master JavaScript with projects, challenges and theory. Many courses in one!",
-    image: "https://source.unsplash.com/featured/300x200",
-  },
-];
 
 // Profile shows basic user information and a list of joined courses
 export default function Profile() {
+  const [joinedCourses, setJoinedCourses] = useState([]);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = user.token;
+
+    const request = async () => {
+      try {
+        const enrolled = await enrollService.getAll(token);
+        setJoinedCourses(enrolled);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    request();
+  }, []);
+
   return (
     <Container component="main" maxWidth="md" sx={{ mb: 4 }}>
       <Paper
@@ -80,7 +83,7 @@ export default function Profile() {
           </Typography>
           <Grid container spacing={3}>
             {joinedCourses.map((course) => (
-              <Grid item xs={12} sm={6} md={4} key={course.id}>
+              <Grid key={course._id} item xs={12} sm={6} md={4}>
                 <CourseCard course={course} />
               </Grid>
             ))}
@@ -97,11 +100,11 @@ function CourseCard({ course }) {
       variant="outlined"
       sx={{ p: 2, display: "flex", flexDirection: "column" }}
     >
-      <img src={course.image} alt={course.title} />
+      <img src={course.coverImage} alt={course.name} />
       <Typography component="h3" variant="subtitle1" mt={2}>
-        {course.title.length > 50
-          ? course.title.substring(0, 50) + "..."
-          : course.title}
+        {course.name.length > 50
+          ? course.name.substring(0, 50) + "..."
+          : course.name}
       </Typography>
     </Paper>
   );
