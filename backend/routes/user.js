@@ -43,7 +43,7 @@ router.use(requireAuth);
 // Profile route
 router.get("/profile", async (req, res) => {
   if (!req.user) {
-    return res.status(404).send("No such user");
+    return res.status(404).json({ error: "No such user" });
   }
 
   res.status(200).json(req.user);
@@ -53,7 +53,7 @@ router.patch("/profile", async (req, res) => {
   const { _id } = req.user;
   const user = await User.findByIdAndUpdate(_id, req.body, { new: true });
   if (!user) {
-    return res.status(404).send("No such user");
+    return res.status(404).json({ error: "No such user" });
   }
 
   res.status(200).json(user);
