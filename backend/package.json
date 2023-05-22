@@ -19,6 +19,7 @@
     "googleapis": "^118.0.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.2.3",
+    "morgan": "^1.10.0",
     "stripe": "^12.9.0",
     "validator": "^13.9.0"
   },
