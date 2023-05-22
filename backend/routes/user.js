@@ -26,7 +26,7 @@ router.post("/login", async (req, res) => {
 // Signup route
 router.post("/signup", async (req, res) => {
   try {
-    const { _id, firstName, lastName, email } = await User.create(req.body);
+    const { _id, firstName, lastName, email } = await User.signup(req.body);
 
     // Create token
     const token = createToken(_id);
