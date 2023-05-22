@@ -17,7 +17,7 @@ router.post("/login", async (req, res) => {
     // Create token
     const token = createToken(_id);
 
-    res.status(200).json({ firstName, lastName, email, token });
+    res.status(200).json({ _id, firstName, lastName, email, token });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -31,7 +31,7 @@ router.post("/signup", async (req, res) => {
     // Create token
     const token = createToken(_id);
 
-    res.status(200).json({ firstName, lastName, email, token });
+    res.status(200).json({ _id, firstName, lastName, email, token });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
