@@ -13,7 +13,8 @@ const cartSchema = new mongoose.Schema({
         }
     ],
     subtotal: {
-        type: Number
+        type: Number,
+        default: 0
     }
 }, { timestamps: true });
 
