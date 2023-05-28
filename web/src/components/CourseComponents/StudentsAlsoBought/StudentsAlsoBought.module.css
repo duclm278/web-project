@@ -1,0 +1,15 @@
+.outerDiv {
+  width: 100%;
+  height: auto;
+}
+
+.ttl {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.bdy {
+  height: min-content;
+  overflow: hidden;
+}
