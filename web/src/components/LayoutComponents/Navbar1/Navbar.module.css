@@ -1,0 +1,170 @@
+.navbar {
+  width: 100%;
+  height: 4.4rem;
+  display: flex;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 8%), 0 4px 12px rgb(0 0 0 / 8%);
+  font-size: 1rem;
+  position: relative;
+}
+
+.menuBox {
+  display: none;
+}
+
+.left {
+  width: 10%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.right {
+  width: 90%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logoBox {
+  width: 90px;
+  height: 70px;
+  cursor: pointer;
+}
+
+.logo {
+  width: 100%;
+  height: 100%;
+}
+
+.catDropdown {
+  cursor: pointer;
+  color: var(--gray);
+}
+
+.searchBox {
+  flex: 1;
+  margin: 0 1rem;
+}
+
+.hovBox {
+  width: max-content;
+  text-decoration: none;
+  color: var(--gray);
+  margin: 0 0.5rem;
+}
+
+.hovBox:hover,
+.catDropdown:hover {
+  color: var(--purple-dark);
+}
+
+.cartBox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin: 0 0.5rem;
+}
+
+.cartIcon {
+  width: 100%;
+  height: 100%;
+}
+
+.btns {
+  width: 20%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.sidebarMenu {
+  width: 50%;
+  height: calc(100vh - 3.5rem);
+  overflow: auto;
+  position: absolute;
+  background-color: var(--white);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 8%), 0 4px 12px rgb(0 0 0 / 8%);
+  z-index: 2;
+}
+
+@media screen and (max-width: 1024px) {
+  .navbar {
+    height: 3.5rem;
+    font-size: 0.8rem;
+  }
+  .searchBox {
+    width: 50%;
+  }
+
+  .btns {
+    width: 25%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .menuBox {
+    margin: 0 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .menuIcon {
+    width: 24px;
+    height: 24px;
+  }
+  .left {
+    width: 100%;
+    height: 100%;
+    margin: 0 1rem;
+    display: flex;
+    justify-content: left;
+  }
+  .right {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .sidebarMenu {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .sidebarMenu {
+    width: 90%;
+  }
+}
+
+/* MOBILE NAVBAR CSS  */
+
+.catDropdownM {
+  cursor: pointer;
+  color: var(--gray);
+  text-align: center;
+  margin: 0.5rem 0;
+}
+
+.searchBoxM {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.hovBoxM {
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem 0;
+}
+
+.btnsM {
+  width: 100%;
+  margin: 1rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}

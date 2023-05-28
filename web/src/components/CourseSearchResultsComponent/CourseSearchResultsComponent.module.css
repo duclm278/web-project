@@ -1,0 +1,77 @@
+.outerDiv {
+  width: 100%;
+  height: 100%;
+}
+
+.innerDiv {
+  width: 100%;
+  height: 100%;
+}
+
+.TtlBox {
+  margin: 1rem 0;
+}
+
+.ttl {
+  font-size: 1.4rem;
+  font-weight: 700;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ttl > span:last-child {
+  text-transform: capitalize;
+}
+
+.topBar {
+  width: 100%;
+  height: max-content;
+  margin: 0.5rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.leftTopBar {
+  display: flex;
+  align-items: center;
+}
+
+.clAllTxt {
+  margin: 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.rightTopBar {
+  color: var(--light-gray);
+  font-weight: 700;
+}
+
+.bdy {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+}
+
+.leftBox {
+  width: 20%;
+  transition: all 0.4s;
+}
+
+.leftBoxW {
+  width: 0;
+  transform: translateX(-250px);
+}
+
+.rightBox {
+  margin-top: 1rem;
+  width: 80%;
+  transition: all 0.4s;
+}
+
+.rightBoxW {
+  width: 100%;
+}

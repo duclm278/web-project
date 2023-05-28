@@ -1,0 +1,163 @@
+.outerDiv {
+  width: 350px;
+  height: max-content;
+  background-color: var(--white);
+  position: absolute;
+  top: 15%;
+  right: 12%;
+  color: var(--gray);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 8%), 0 4px 12px rgb(0 0 0 / 8%);
+}
+
+.innRightDiv {
+  width: 100%;
+  height: 35%;
+  cursor: pointer;
+  position: relative;
+  border: 1px solid var(--white);
+}
+
+.imgBox {
+  width: 100%;
+  height: 100%;
+}
+
+.crsThumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imgMask {
+  width: 100%;
+  height: 80%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.imgODiv {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.imgIcon {
+  width: 25px;
+  height: 25px;
+}
+.maskTxt {
+  margin: 1rem 0;
+  font-size: 1rem;
+  letter-spacing: -0.02rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.maskDiv {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  -webkit-mask-image: linear-gradient(transparent, rgba(0, 0, 0, 8));
+}
+
+.crsePmtDt {
+  padding: 1rem;
+}
+
+.prcDet {
+  display: flex;
+  align-items: center;
+}
+
+.prc {
+  font-size: 2rem;
+  font-weight: 700;
+}
+.dscPrc {
+  font-size: 0.9rem;
+  text-decoration: line-through;
+  color: var(--light-gray);
+  margin: 0 0.5rem;
+}
+
+.tmLeft {
+  color: var(--red);
+}
+
+.cicon {
+  width: 12px;
+  height: 12px;
+  filter: brightness(0) saturate(100%) invert(43%) sepia(70%) saturate(2307%)
+    hue-rotate(340deg) brightness(94%) contrast(103%);
+  margin-right: 0.5rem;
+}
+
+.btns {
+  margin: 0.5rem 0;
+}
+
+.btnsSec1 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btnsSec2 {
+  width: 100%;
+}
+
+.crsePmtDtTxt {
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
+.crsePmtDtExSec {
+  margin-top: 1rem;
+  margin-bottom: 0rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.innCrsePmtDtExSec {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+  cursor: pointer;
+}
+
+.inptBox {
+  width: 100%;
+  margin-top: 1rem;
+  margin-bottom: -2rem;
+}
+
+.footerSec {
+  padding: 1rem;
+}
+
+.fooTtl {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.fooDesc {
+  font-size: 0.9rem;
+  margin: 0.7rem 0;
+}
+
+@media screen and (max-width: 1024px) {
+  .outerDiv {
+    display: none;
+  }
+}

@@ -5,21 +5,27 @@ import Slider from "react-slick";
 import backIcon from "/icons/back.png";
 import nextIcon from "/icons/next.png";
 
-import CourseCard from "../../Cards/CourseCard/CourseCard";
-
 import ArrowsComp from "../ArrowComp/ArrowsComp";
 
-import css from "./CourseCarouselComp.module.css";
+import css from "./CarouselLayout.module.css";
 
-const CourseCarouselComp = (props) => {
-  const { ttl, link = null, linkTxt = "", coursesData } = props;
+const CarouselLayout = (props) => {
+  const {
+    ttl,
+    link = null,
+    linkTxt = "",
+    children,
+    autoplay = false,
+    slidesToShow = 1,
+    slidesToScroll = 1,
+  } = props;
+
   const settings = {
-    dots: false,
-    infinite: false,
+    autoplay: autoplay,
+    infinite: true,
     speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 6,
-    initialSlide: 0,
+    slidesToShow: slidesToShow,
+    slidesToScroll: slidesToScroll,
     lazyLoad: true,
     nextArrow: <ArrowsComp img={nextIcon} />,
     prevArrow: <ArrowsComp img={backIcon} />,
@@ -58,13 +64,11 @@ const CourseCarouselComp = (props) => {
           </Link>
         </h2>
       ) : null}
-      <Slider {...settings}>
-        {coursesData?.map((item, id) => {
-          return <CourseCard key={id} data={item} />;
-        })}
+      <Slider {...settings} className={css.slider}>
+        {children}
       </Slider>
     </div>
   );
 };
 
-export default CourseCarouselComp;
+export default CarouselLayout;

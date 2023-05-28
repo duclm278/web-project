@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import logo from "/images/logo-udemy-inverted.svg";
+import globeIcon from "/icons/globe.png";
 
 import css from "./Footer.module.css";
 
+import Button1 from "../../../utils/Buttons/Button1/Button1";
 import LanguageChangeCard from "../../Cards/LanguageChangeCard/LanguageChangeCard";
 
 const Footer = () => {
@@ -18,10 +20,10 @@ const Footer = () => {
           <div className={css.clmn}>
             <ul className={css.cul}>
               <li className={css.cli}>
-                <Link to="/">Bussiness</Link>
+                <Link to="/">Udemy Bussiness</Link>
               </li>
               <li className={css.cli}>
-                <Link to="/">Teaching now</Link>
+                <Link to="/">Teach on Udemy</Link>
               </li>
               <li className={css.cli}>
                 <Link to="/">Get the app</Link>
@@ -71,6 +73,18 @@ const Footer = () => {
                 <Link to="/">Accessibility statement</Link>
               </li>
             </ul>
+          </div>
+          <div className={[css.lastChild, css.clmn].join(" ")}>
+            <Button1
+              img={globeIcon}
+              txt="English"
+              bck="#1c1d1f"
+              color="#fff"
+              onClick={() => setShowLanguageSettingsModal(true)}
+              hovBck="rgba(255,255,255,.08)"
+              extraCss={{ border: "1px solid #fff" }}
+              imageCss={{ filter: "invert(1)" }}
+            />
           </div>
         </div>
         <div className={css.creds}>
