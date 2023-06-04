@@ -6,23 +6,26 @@ const VITE_APP_BASE_URL =
 const baseUrl = VITE_APP_BASE_URL + "/carts";
 
 const createCart = async (userId) => {
-  const response = await axios.post(`${baseUrl}`, {
-    userId: userId,
-    items: [],
-  });
-  localStorage.setItem("hasCart", "true");
-  return response.data;
+  try {
+    const response = await axios.post(`${baseUrl}`, {
+      userId: userId,
+      items: [],
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const getUserCart = async (userId, token) => {
-  if (localStorage.getItem("hasCart")) {
+  try {
     const response = await axios.get(`${baseUrl}/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
-  } else {
+  } catch {
     const response = await createCart(userId);
-    return response.data;
+    return response;
   }
 };
 
@@ -45,7 +48,7 @@ const removeFromCart = async (userId, courseId, coursePrice, token) => {
 
 const deleteCart = async (userId, token) => {
   const cart = await getUserCart(userId, token);
-  localStorage.removeItem("hasCart");
   await axios.delete(`${baseUrl}/${cart._id}`);
+  return;
 };
 export default { getUserCart, addToCart, removeFromCart, deleteCart };
