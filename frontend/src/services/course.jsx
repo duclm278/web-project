@@ -13,10 +13,8 @@ const getAll = async (token) => {
   return response.data;
 };
 
-const getOne = async (token, id) => {
-  const response = await axios.get(`${baseUrl}/${id}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+const getOne = async (id) => {
+  const response = await axios.get(`${baseUrl}/${id}`);
   return response.data;
 };
 

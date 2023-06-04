@@ -12,8 +12,7 @@ export default function Course() {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const user = JSON.parse(localStorage.getItem("user"));
-        const data = await courseService.getOne(user.token, params.courseId);
+        const data = await courseService.getOne(params.courseId);
         setCourse(data);
       } catch (e) {
         console.log(e);

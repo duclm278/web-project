@@ -21,6 +21,7 @@ const userRouter = require("./routes/user");
 const enrollRouter = require("./routes/enroll");
 const progressRouter = require("./routes/progress");
 const checkoutRouter = require("./routes/checkout");
+const ratingRouter = require("./routes/rating");
 
 app.use("/api/courses", courseRouter);
 app.use("/api/carts", cartRouter);
@@ -31,6 +32,7 @@ app.use("/api/users", userRouter);
 app.use("/api/enroll", enrollRouter);
 app.use("/api/progress", progressRouter);
 app.use("/api/checkout", checkoutRouter);
+app.use("/api/ratings", ratingRouter);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
