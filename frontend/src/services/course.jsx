@@ -6,10 +6,8 @@ const VITE_APP_BASE_URL =
 const baseUrl = VITE_APP_BASE_URL + "/courses";
 console.log("VITE_APP_BASE_URL", import.meta.env.VITE_APP_BASE_URL);
 
-const getAll = async (token) => {
-  const response = await axios.get(`${baseUrl}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+const getAll = async () => {
+  const response = await axios.get(`${baseUrl}`);
   return response.data;
 };
 
