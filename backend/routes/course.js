@@ -25,6 +25,22 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/search", async (req, res) => {
+  try {
+    let q = req.query.query;
+    let foundCourses = await courseModel.find({ $text: { $search: q } });
+    foundCourses = foundCourses.map((c) => {
+      return {
+        id: c._id,
+        ...c._doc,
+      };
+    });
+    res.status(200).json(foundCourses);
+  } catch (e) {
+    res.status(404).json({ error: "No such course found" })
+  }
+})
+
 router.get("/:id", async (req, res) => {
   try {
     const course = await courseModel.findById(req.params.id);
