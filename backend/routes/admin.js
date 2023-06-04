@@ -4,8 +4,8 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 
 const createToken = (_id) => {
-  const SECRET = process.env.SECRET || "hello";
-  return jwt.sign({ _id }, SECRET, { expiresIn: "3d" });
+  const JWT_SECRET = process.env.JWT_SECRET || "hello";
+  return jwt.sign({ _id }, JWT_SECRET, { expiresIn: "3d" });
 };
 
 // Login route
