@@ -1,0 +1,5 @@
+.w-md-editor-text-pre > code,
+.w-md-editor-text-input {
+  font-size: 16px !important;
+  font-family: "Menlo", "Consolas", '"Droid Sans Mono"', monospace !important;
+}

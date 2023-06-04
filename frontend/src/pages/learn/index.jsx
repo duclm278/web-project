@@ -1,8 +1,9 @@
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/Header";
 import courseService from "../../services/course";
+import enrollService from "../../services/enroll";
 import progressService from "../../services/progress";
 import { formatTime } from "../../utils/formatter";
 import LearningList from "./LearningList";
@@ -13,6 +14,7 @@ export default function Learning() {
   const [lessons, setLessons] = useState([]);
   const [currentLessonId, setCurrentLessonId] = useState(null);
   const [completedLessons, setCompletedLessons] = useState([]);
+  const navigate = useNavigate();
 
   let videoUrl = null;
   if (currentLessonId) {
@@ -37,6 +39,15 @@ export default function Learning() {
     const token = user.token;
 
     let course;
+    const checkEnroll = async () => {
+      try {
+        await enrollService.getOne(token, courseId);
+      } catch (err) {
+        console.log(err);
+        navigate(`/course/${courseId}`);
+      }
+    };
+
     const fetchCourse = async () => {
       try {
         course = await courseService.getOne(token, courseId);
@@ -61,9 +72,10 @@ export default function Learning() {
       }
     };
 
+    checkEnroll();
     fetchCourse();
     fetchProgress();
-  }, [courseId]);
+  }, [courseId, navigate]);
 
   const handleOnEnded = async (lessonId) => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -124,7 +136,6 @@ export default function Learning() {
               Course Content
             </Typography>
             <Typography component="p" variant="body1">
-              {/* 10/54 lectures • 6h 51m left */}
               {completedLessons.length}/{lessons.length} lessons •{" "}
               {formatTime(totalLengthSecondsLeft)} left
             </Typography>
