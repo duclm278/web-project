@@ -34,11 +34,9 @@ const userSchema = new Schema(
       type: [
         {
           courseId: String,
+          userRating: Number,
           currentLesson: String,
-          completedLessons: {
-            type: [String],
-            default: [],
-          },
+          completedLessons: [String],
         },
       ],
       default: [],

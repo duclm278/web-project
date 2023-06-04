@@ -35,6 +35,12 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const { _id, joinedCourses } = req.user;
+
+  // Check if format is correct
+  if (!req.body?.courseId) {
+    return res.status(400).json({ error: "Expected object with courseId" });
+  }
+
   if (joinedCourses.find((course) => course.courseId === req.body.courseId)) {
     return res.status(400).json({ error: "Already enrolled" });
   }
