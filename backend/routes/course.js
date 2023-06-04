@@ -4,7 +4,13 @@ const requireAuth = require("../middleware/requireAuth");
 
 router.get("/", async (req, res) => {
   try {
-    let courses = await courseModel.find({});
+    let popular = req.query.popular;
+    let courses;
+    if (!popular) {
+      courses = await courseModel.find({});
+    } else {
+      courses = await courseModel.find({}).sort({ studentsEnrolled: -1 }).limit(5);
+    }
     res.header("Access-Control-Expose-Headers", "Content-Range");
     res.header("Content-Range", `courses 0-20/${courses.length}`);
     courses = courses.map((c) => {
