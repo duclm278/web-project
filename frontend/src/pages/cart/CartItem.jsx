@@ -26,8 +26,7 @@ export default function CartItem(props) {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const user = JSON.parse(localStorage.getItem("user"));
-        const data = await courseService.getOne(user.token, props.courseId);
+        const data = await courseService.getOne(props.courseId);
         setCourse(data);
       } catch (e) {
         alert(e);

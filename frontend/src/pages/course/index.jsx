@@ -4,6 +4,8 @@ import CoursePurchase from "./CoursePurchase";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import courseService from "../../services/course";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 export default function Course() {
   const params = useParams();
@@ -23,15 +25,19 @@ export default function Course() {
   }, [params.courseId]);
 
   return (
-    <Container sx={{ maxWidth: 900, marginTop: 5 }}>
-      <Grid container spacing={5}>
-        <Grid item xs={8}>
-          <CourseDetails course={course} />
+    <>
+      <Header />
+      <Container sx={{ maxWidth: 900, marginTop: 5 }}>
+        <Grid container spacing={5}>
+          <Grid item xs={8}>
+            <CourseDetails course={course} />
+          </Grid>
+          <Grid item xs={4}>
+            <CoursePurchase course={course} />
+          </Grid>
         </Grid>
-        <Grid item xs={4}>
-          <CoursePurchase course={course} />
-        </Grid>
-      </Grid>
-    </Container>
+      </Container>
+      <Footer />
+    </>
   );
 }
