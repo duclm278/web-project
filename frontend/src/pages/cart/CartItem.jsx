@@ -3,10 +3,13 @@ import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import courseService from "../../services/course";
 import cartService from "../../services/cart";
+import ratingService from "../../services/rating";
 import { formatPrice } from "../../utils/formatter";
 
+//TODO: rating
 export default function CartItem(props) {
   const [course, setCourse] = useState({});
+  const [rating, setRating] = useState(0);
   const removeFromCart = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
@@ -33,7 +36,17 @@ export default function CartItem(props) {
       }
     };
 
+    const fetchTotalRating = async () => {
+      try {
+        const totalRating = await ratingService.getTotalRating(props.courseId);
+        setRating(totalRating.totalRating);
+      } catch (err) {
+        setRating(0);
+      }
+    };
+
     fetchCourse();
+    fetchTotalRating();
   }, [props.courseId]);
   return (
     <>
@@ -54,12 +67,9 @@ export default function CartItem(props) {
           </Typography>
           <Box display={"flex"}>
             <Typography variant="body1" component="p">
-              4.6
+              {rating}
             </Typography>
-            <Rating name="read-only" value={4.6} precision={0.1} readOnly />
-            <Typography variant="subtitle1" component="p">
-              ({course.numRating} ratings)
-            </Typography>
+            <Rating name="read-only" value={rating} precision={0.1} readOnly />
           </Box>
           <Typography variant="subtitle1" component="p">
             {course.lessons?.length ?? 0} lectures
