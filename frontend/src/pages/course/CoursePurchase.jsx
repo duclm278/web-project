@@ -9,8 +9,10 @@ import {
 import PropTypes from "prop-types";
 import { formatPrice } from "../../utils/formatter";
 import cartService from "../../services/cart";
+import { useNavigate } from "react-router-dom";
 
 export default function CoursePurchase(props) {
+  const navigate = useNavigate();
   const addToCart = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
@@ -20,6 +22,7 @@ export default function CoursePurchase(props) {
         props.course.price,
         user.token
       );
+      navigate("/cart");
     } catch (e) {
       console.log(e);
       alert(e);
