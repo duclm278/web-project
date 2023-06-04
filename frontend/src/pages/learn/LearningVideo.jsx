@@ -3,7 +3,7 @@ import Linkify from "linkify-react";
 import { useState } from "react";
 import ReactPlayer from "react-player";
 
-export default function LearningVideo({ lesson }) {
+export default function LearningVideo({ lesson, onEnded }) {
   const [tabValue, setTabValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -25,7 +25,7 @@ export default function LearningVideo({ lesson }) {
           controls
           width="100%"
           height="100%"
-          onEnded={() => console.log("Video Ended")}
+          onEnded={onEnded}
         />
       </Box>
 
