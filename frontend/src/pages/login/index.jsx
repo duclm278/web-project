@@ -56,13 +56,13 @@ export default function Login() {
         md={7}
         sx={{
           backgroundImage:
-            "url(https://source.unsplash.com/random?macbook&fm=jpg&w=400&fit=max)",
+            "url(https://cdni.iconscout.com/illustration/premium/thumb/online-learning-5649081-4707137.png)",
           backgroundRepeat: "no-repeat",
           backgroundColor: (t) =>
             t.palette.mode === "light"
               ? t.palette.grey[50]
               : t.palette.grey[900],
-          backgroundSize: "cover",
+          backgroundSize: "contain",
           backgroundPosition: "center",
         }}
       />
