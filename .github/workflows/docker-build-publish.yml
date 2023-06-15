@@ -32,13 +32,13 @@ jobs:
           push: true
           tags: dungnt07/web_project_backend:latest
       - name: Build and push frontend image
-        uses: docker/build-and-push-action@v2
+        uses: docker/build-push-action@v2
         with:
           context: ./frontend
           push: true
           tags: dungnt07/web_project_frontend:latest
       - name: Build and push admin-panel image
-        uses: docker/build-and-push-action@v2
+        uses: docker/build-push-action@v2
         with:
           context: ./admin-panel
           push: true
