@@ -7,6 +7,9 @@ import CourseList from "./components/course/CourseList";
 import OrderEdit from "./components/order/OrderEdit";
 import OrderList from "./components/order/OrderList";
 
+const BASE_URL =
+  import.meta.env.VITE_APP_BASE_URL || "http://localhost:3001/api";
+
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
     options.headers = new Headers({ Accept: "application/json" });
@@ -20,7 +23,7 @@ function App() {
   return (
     <Admin
       authProvider={authProvider}
-      dataProvider={simpleRestProvider("http://localhost:3001/api", httpClient)}
+      dataProvider={simpleRestProvider(BASE_URL, httpClient)}
     >
       <Resource
         name="courses"

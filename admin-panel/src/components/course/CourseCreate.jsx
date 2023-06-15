@@ -1,10 +1,13 @@
 import { Create, NumberInput, SimpleForm, TextInput } from "react-admin";
 import axios from "axios";
 
+const BASE_URL =
+  import.meta.env.VITE_APP_BASE_URL || "http://localhost:3001/api";
+
 const CourseCreate = (props) => {
   const handleSubmit = (courseData) => {
     axios
-      .post("http://localhost:3001/api/upload", courseData)
+      .post(`${BASE_URL}/upload`, courseData)
       .then((response) => {
         console.log("Course created successfully!", response);
       })
