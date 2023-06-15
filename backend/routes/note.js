@@ -38,8 +38,12 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: "Content required" });
   }
 
-  const note = await Note.create({ userId, lessonId, time, content });
-  res.status(201).json(note);
+  try {
+    const note = await Note.create({ userId, lessonId, time, content });
+    return res.status(201).json(note);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
 });
 
 router.delete("/:noteId", async (req, res) => {
@@ -66,7 +70,6 @@ router.patch("/:noteId", async (req, res) => {
   if (!note) {
     return res.status(404).json({ error: "Note not found" });
   }
-
   res.status(200).json(note);
 });
 

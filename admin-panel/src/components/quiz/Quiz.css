@@ -1,0 +1,27 @@
+.lv-1 > .RaSimpleFormIterator-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.lv-1 > .RaSimpleFormIterator-list > .RaSimpleFormIterator-line {
+  padding: 1.25rem 0.55rem 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+}
+
+.lv-1 > .RaSimpleFormIterator-list > .RaSimpleFormIterator-line:last-child {
+  border-bottom: 1px solid #ccc !important;
+}
+
+.lv-2 > .RaSimpleFormIterator-list > .RaSimpleFormIterator-line {
+  border-bottom: none;
+}
+
+.ra-input .RaArrayInput-root {
+  padding: 0.55rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+}

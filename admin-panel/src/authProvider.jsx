@@ -1,8 +1,11 @@
 import decodeJwt from "jwt-decode";
 
+const VITE_APP_BASE_URL =
+  import.meta.env.VITE_APP_BASE_URL || "http://localhost:3001/api";
+
 export default {
   login: async ({ username, password }) => {
-    const request = new Request("http://localhost:3001/api/admins/login", {
+    const request = new Request(`${VITE_APP_BASE_URL}/admins/login`, {
       method: "POST",
       body: JSON.stringify({ email: username, password }),
       headers: new Headers({ "Content-Type": "application/json" }),

@@ -31,7 +31,10 @@ export function NoteCreate({
           <Link
             underline="hover"
             fontWeight="bold"
-            onClick={(e) => handleSeek(e, timeMarked)}
+            onClick={(e) => {
+              e.preventDefault();
+              handleSeek(timeMarked);
+            }}
             sx={{ mb: 1 }}
           >
             {formatTime(timeMarked)}
