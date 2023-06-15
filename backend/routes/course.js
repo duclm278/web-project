@@ -27,8 +27,13 @@ router.get("/", async (req, res) => {
 
 router.get("/search", async (req, res) => {
   try {
-    let q = req.query.query;
-    let foundCourses = await courseModel.find({ $text: { $search: q } });
+    let q = req.query.query || "";
+    let foundCourses;
+    if (q.length) {
+      foundCourses = await courseModel.find({ $text: { $search: q } });
+    } else {
+      foundCourses = await courseModel.find({});
+    }
     foundCourses = foundCourses.map((c) => {
       return {
         id: c._id,
