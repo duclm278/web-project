@@ -4,8 +4,7 @@ const courseModel = require("../models/Course");
 
 router.post("/", async (req, res) => {
   if (!req.body.playlistUrl) {
-    res.status(400).json("Missing playlist url");
-    return;
+    return res.status(400).json("Missing playlist url");
   }
 
   let playlistUrl = req.body.playlistUrl;
@@ -14,7 +13,7 @@ router.post("/", async (req, res) => {
   let course = await getCourseDetails(playlistUrl);
 
   if (!course) {
-    res.status(400).json({ error: "Could not upload course" });
+    return res.status(400).json({ error: "Could not upload course" });
   }
 
   course.price = req.body.price;
@@ -24,10 +23,10 @@ router.post("/", async (req, res) => {
 
   try {
     const savedCourse = await courseModel.create(course);
-    res.status(201).json(savedCourse);
+    return res.status(201).json(savedCourse);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
 
