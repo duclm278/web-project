@@ -4,8 +4,10 @@ import Checkout from "./pages/checkout";
 import Course from "./pages/course";
 import Home from "./pages/home";
 import Learning from "./pages/learn";
-import Login from "./pages/login";
-import Profile from "./pages/profile";
+import SignIn from "./pages/sign-in";
+import SignUp from "./pages/sign-up";
+import Profile from "./pages/profile/Profile";
+import ProfileEdit from "./pages/profile/ProfileEdit";
 import SearchResults from "./pages/search";
 
 export default function Router() {
@@ -36,11 +38,24 @@ export default function Router() {
     },
     {
       path: "profile",
-      element: <Profile />,
+      children: [
+        {
+          path: "",
+          element: <Profile />,
+        },
+        {
+          path: "edit",
+          element: <ProfileEdit />,
+        },
+      ],
     },
     {
-      path: "login",
-      element: <Login />,
+      path: "sign-in",
+      element: <SignIn />,
+    },
+    {
+      path: "sign-up",
+      element: <SignUp />,
     },
     {
       path: "learn",
