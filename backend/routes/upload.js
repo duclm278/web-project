@@ -16,11 +16,13 @@ router.post("/", async (req, res) => {
     course.price = req.body.price;
     course.coverImage = req.body.coverImage;
 
+    console.log(course);
     try {
         const savedCourse = await courseModel.create(course);
         res.status(201).json(savedCourse);
-    } catch {
-        res.status(400).json({ error: "Could not upload course" });
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ error: "Could not upload course" });
     }
 })
 

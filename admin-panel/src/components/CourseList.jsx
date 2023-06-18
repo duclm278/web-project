@@ -2,6 +2,7 @@ import {
   ArrayField,
   List,
   Datagrid,
+  ImageField,
   NumberField,
   TextField,
   DateField,
@@ -14,18 +15,17 @@ const CourseList = (props) => {
     <List {...props}>
       <Datagrid>
         <TextField source="id" />
+        <ImageField source="coverImage" title="name" />
         <TextField source="name" />
         <NumberField source="price" />
-        <ArrayField source="lessons">
+        <ArrayField source="lessons" perPage={5}>
           <Datagrid bulkActionButtons={false}>
-            <TextField source="_id" />
             <TextField source="name" />
             <TextField source="videoUrl" />
             <NumberField source="lengthSeconds" />
           </Datagrid>
         </ArrayField>
         <NumberField source="studentsEnrolled" />
-        <TextField source="coverImage" />
         <DateField source="createdAt" />
         <EditButton />
         <DeleteButton />

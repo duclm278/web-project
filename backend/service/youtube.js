@@ -20,24 +20,37 @@ const getCourseDetails = async (playlistID) => {
         id: playlistID,
     });
 
-    const res = await youtube.playlistItems.list({
-        part: 'snippet,contentDetails',
-        playlistId: playlistID,
-        maxResults: 50,
-    });
 
     let videos = [];
+    let nextPageToken = '';
 
-    for (let video of res.data.items) {
-        const id = video.snippet.resourceId.videoId;
-        const vid = await getVideoDetails(id);
-        videos.push({
-            name: vid.snippet.title,
-            videoUrl: `https://www.youtube.com/watch?v=${id}`,
-            description: vid.snippet.description,
-            lengthSeconds: ISO8601toSeconds(vid.contentDetails.duration),
-        });
+    try {
+        do {
+            const res = await youtube.playlistItems.list({
+                part: 'snippet,contentDetails',
+                playlistId: playlistID,
+                maxResults: 50,
+                pageToken: nextPageToken,
+            });
+
+            const { items, nextPageToken: token } = res.data;
+            for (let video of items) {
+                const id = video.snippet.resourceId.videoId;
+                const vid = await getVideoDetails(id);
+                videos.push({
+                    name: vid.snippet.title,
+                    videoUrl: `https://www.youtube.com/watch?v=${id}`,
+                    description: vid.snippet.description,
+                    lengthSeconds: ISO8601toSeconds(vid.contentDetails.duration),
+                });
+            }
+            nextPageToken = token;
+        } while (nextPageToken);
+    } catch (err) {
+        console.log(err);
+        return;
     }
+
 
     let course = {
         name: playlistInfo.data.items[0].snippet.title,
