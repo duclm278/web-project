@@ -17,10 +17,12 @@ app.use(
 const courseRouter = require("./routes/course");
 const cartRouter = require("./routes/cart");
 const orderRouter = require("./routes/order");
+const uploadRouter = require("./routes/upload");
 
 app.use("/api/courses", courseRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/orders", orderRouter);
+app.use("/api/upload", uploadRouter);
 
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
