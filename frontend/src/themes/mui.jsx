@@ -28,7 +28,6 @@ const theme = createTheme({
       defaultProps: {
         disableElevation: true,
       },
-      styleOverrides: {},
       variants: [
         {
           props: {
@@ -51,15 +50,9 @@ const theme = createTheme({
         },
       ],
     },
-    MuiMenu: {
-      styleOverrides: {},
-    },
-    MuiPopover: {
-      styleOverrides: {},
-    },
-    MuiDivider: {
-      styleOverrides: {},
-    },
+    MuiMenu: {},
+    MuiPopover: {},
+    MuiDivider: {},
     MuiLink: {
       defaultProps: {
         underline: "none",
@@ -85,9 +78,7 @@ const theme = createTheme({
         },
       ],
     },
-    MuiChip: {
-      styleOverrides: {},
-    },
+    MuiChip: {},
     MuiList: {
       styleOverrides: {
         root: {
@@ -95,13 +86,10 @@ const theme = createTheme({
         },
       },
     },
-    MuiListItemButton: {
-      styleOverrides: {},
-    },
+    MuiListItemButton: {},
     MuiSelect: {
       defaultProps: {
         IconComponent: {
-          type: {},
           compare: null,
         },
       },
@@ -116,18 +104,10 @@ const theme = createTheme({
         disableTouchRipple: true,
       },
     },
-    MuiPaper: {
-      styleOverrides: {},
-    },
-    MuiTableCell: {
-      styleOverrides: {},
-    },
-    MuiToggleButtonGroup: {
-      styleOverrides: {},
-    },
-    MuiToggleButton: {
-      styleOverrides: {},
-    },
+    MuiPaper: {},
+    MuiTableCell: {},
+    MuiToggleButtonGroup: {},
+    MuiToggleButton: {},
     MuiTooltip: {
       styleOverrides: {
         tooltip: {
@@ -164,9 +144,7 @@ const theme = createTheme({
         },
       },
     },
-    MuiPaginationItem: {
-      styleOverrides: {},
-    },
+    MuiPaginationItem: {},
   },
   palette: {
     mode: "light",
@@ -504,97 +482,15 @@ const theme = createTheme({
     backgroundColor: {
       themeKey: "palette",
     },
-    p: {},
-    pt: {},
-    pr: {},
-    pb: {},
-    pl: {},
-    px: {},
-    py: {},
-    padding: {},
-    paddingTop: {},
-    paddingRight: {},
-    paddingBottom: {},
-    paddingLeft: {},
-    paddingX: {},
-    paddingY: {},
-    paddingInline: {},
-    paddingInlineStart: {},
-    paddingInlineEnd: {},
-    paddingBlock: {},
-    paddingBlockStart: {},
-    paddingBlockEnd: {},
-    m: {},
-    mt: {},
-    mr: {},
-    mb: {},
-    ml: {},
-    mx: {},
-    my: {},
-    margin: {},
-    marginTop: {},
-    marginRight: {},
-    marginBottom: {},
-    marginLeft: {},
-    marginX: {},
-    marginY: {},
-    marginInline: {},
-    marginInlineStart: {},
-    marginInlineEnd: {},
-    marginBlock: {},
-    marginBlockStart: {},
-    marginBlockEnd: {},
     displayPrint: {
       cssProperty: false,
     },
-    display: {},
-    overflow: {},
-    textOverflow: {},
-    visibility: {},
-    whiteSpace: {},
-    flexBasis: {},
-    flexDirection: {},
-    flexWrap: {},
-    justifyContent: {},
-    alignItems: {},
-    alignContent: {},
-    order: {},
-    flex: {},
-    flexGrow: {},
-    flexShrink: {},
-    alignSelf: {},
-    justifyItems: {},
-    justifySelf: {},
-    gap: {},
-    rowGap: {},
-    columnGap: {},
-    gridColumn: {},
-    gridRow: {},
-    gridAutoFlow: {},
-    gridAutoColumns: {},
-    gridAutoRows: {},
-    gridTemplateColumns: {},
-    gridTemplateRows: {},
-    gridTemplateAreas: {},
-    gridArea: {},
-    position: {},
     zIndex: {
       themeKey: "zIndex",
     },
-    top: {},
-    right: {},
-    bottom: {},
-    left: {},
     boxShadow: {
       themeKey: "shadows",
     },
-    width: {},
-    maxWidth: {},
-    minWidth: {},
-    height: {},
-    maxHeight: {},
-    minHeight: {},
-    boxSizing: {},
     fontFamily: {
       themeKey: "typography",
     },
@@ -607,10 +503,6 @@ const theme = createTheme({
     fontWeight: {
       themeKey: "typography",
     },
-    letterSpacing: {},
-    textTransform: {},
-    lineHeight: {},
-    textAlign: {},
     typography: {
       cssProperty: false,
       themeKey: "typography",
