@@ -1,34 +1,37 @@
-import { Container, Grid, Paper, Typography } from "@mui/material";
+import { Stack, Typography, Box } from "@mui/material";
 import LearningVideo from "./LearningVideo";
 import LearningList from "./LearningList";
+import Header from "../../components/Header";
 
 export default function Learning() {
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={9} lg={9}>
-          <Paper
-            variant="outlined"
-            sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
-          >
-            <Typography component="h1" variant="h4" align="center" mb={3}>
-              Learning
-            </Typography>
+    <Box>
+      <Header />
+      <Stack direction="row" sx={{ height: "90vh" }}>
+        <Stack maxWidth="lg" flex={3}>
+          <Box sx={{ p: { xs: 2, md: 3 }, overflow: "auto" }}>
             <LearningVideo />
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={3} lg={3}>
-          <Paper
-            variant="outlined"
-            sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+          </Box>
+        </Stack>
+        <Stack maxWidth="lg" flex={1}>
+          <Typography
+            component="h1"
+            variant="h4"
+            align="center"
+            my={2}
+            sx={{
+              position: "sticky",
+              top: 0,
+              bgcolor: "background.paper",
+            }}
           >
-            <Typography component="h1" variant="h4" align="center" mb={3}>
-              Sidebar
-            </Typography>
+            Course Content
+          </Typography>
+          <Box sx={{ px: { xs: 2, md: 3 }, overflow: "auto" }}>
             <LearningList />
-          </Paper>
-        </Grid>
-      </Grid>
-    </Container>
+          </Box>
+        </Stack>
+      </Stack>
+    </Box>
   );
 }
