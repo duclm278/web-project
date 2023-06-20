@@ -150,19 +150,18 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.title} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">
-                    <Link
-                      to={page.path}
-                      style={{
-                        color: "inherit",
-                        textDecoration: "none",
-                      }}
-                    >
-                      {page.title}
-                    </Link>
-                  </Typography>
-                </MenuItem>
+                <Link
+                  key={page.title}
+                  to={page.path}
+                  style={{
+                    color: "inherit",
+                    textDecoration: "none",
+                  }}
+                >
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{page.title}</Typography>
+                  </MenuItem>
+                </Link>
               ))}
             </Menu>
           </Box>
@@ -189,21 +188,21 @@ function ResponsiveAppBar() {
 
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Button
+              <Link
                 key={page.title}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
+                to={page.path}
+                style={{
+                  color: "inherit",
+                  textDecoration: "none",
+                }}
               >
-                <Link
-                  to={page.path}
-                  style={{
-                    color: "inherit",
-                    textDecoration: "none",
-                  }}
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
                 >
                   {page.title}
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             ))}
           </Box>
 
@@ -273,19 +272,18 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting.title} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">
-                    <Link
-                      to={setting.path}
-                      style={{
-                        color: "inherit",
-                        textDecoration: "none",
-                      }}
-                    >
-                      {setting.title}
-                    </Link>
-                  </Typography>
-                </MenuItem>
+                <Link
+                  key={setting.title}
+                  to={setting.path}
+                  style={{
+                    color: "inherit",
+                    textDecoration: "none",
+                  }}
+                >
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting.title}</Typography>
+                  </MenuItem>
+                </Link>
               ))}
             </Menu>
           </Box>
