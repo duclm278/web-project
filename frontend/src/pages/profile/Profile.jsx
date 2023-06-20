@@ -7,14 +7,14 @@ const joinedCourses = [
     title: "React - The Complete Guide (incl Hooks, React Router, Redux)",
     description:
       "Dive in and learn React.js from scratch! Learn Reactjs, Hooks, Redux, React Routing, Animations, Next.js and way more!",
-    image: "https://source.unsplash.com/random",
+    image: "https://source.unsplash.com/featured/300x200",
   },
   {
     id: 2,
     title: "The Complete JavaScript Course 2021: From Zero to Expert!",
     description:
       "The modern JavaScript course for everyone! Master JavaScript with projects, challenges and theory. Many courses in one!",
-    image: "https://source.unsplash.com/random",
+    image: "https://source.unsplash.com/featured/300x200",
   },
 ];
 
@@ -43,31 +43,51 @@ export default function Profile() {
                   mb: 2,
                 }}
               />
-              <Typography component="h1" variant="h5" align="center">
+              <Typography
+                component="h1"
+                variant="h5"
+                fontWeight="bold"
+                align="center"
+              >
                 John Doe
               </Typography>
               <Typography variant="subtitle1" align="center">
-                Joined since 2021
+                Since 2021
               </Typography>
             </Box>
           </Grid>
           <Grid item xs={12} md={8}>
-            <Typography component="h1" variant="h4" align="center" mb={3}>
-              User Profile
+            <Typography
+              component="h1"
+              variant="h4"
+              fontWeight="bold"
+              align="center"
+              mb={3}
+            >
+              Basic Info
             </Typography>
             <ProfileForm />
-            <Typography component="h2" variant="h6" my={2}>
-              Joined Courses
-            </Typography>
-            <Grid container spacing={3}>
-              {joinedCourses.map((course) => (
-                <Grid item xs={12} sm={6} md={4} key={course.id}>
-                  <CourseCard course={course} />
-                </Grid>
-              ))}
-            </Grid>
           </Grid>
         </Grid>
+
+        <Box mt={2} p={4}>
+          <Typography
+            component="h2"
+            variant="h6"
+            fontWeight="bold"
+            mb={2}
+            ml={2}
+          >
+            Joined Courses
+          </Typography>
+          <Grid container spacing={3}>
+            {joinedCourses.map((course) => (
+              <Grid item xs={12} sm={6} md={4} key={course.id}>
+                <CourseCard course={course} />
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
       </Paper>
     </Container>
   );
