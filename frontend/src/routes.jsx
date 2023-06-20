@@ -4,11 +4,11 @@ import Checkout from "./pages/checkout";
 import Course from "./pages/course";
 import Home from "./pages/home";
 import Learning from "./pages/learn";
-import SignIn from "./pages/sign-in";
-import SignUp from "./pages/sign-up";
+import Login from "./pages/login";
+import Logout from "./pages/logout";
 import Profile from "./pages/profile/Profile";
-import ProfileEdit from "./pages/profile/ProfileEdit";
 import SearchResults from "./pages/search";
+import Signup from "./pages/signup";
 
 export default function Router() {
   const routes = useRoutes([
@@ -38,24 +38,19 @@ export default function Router() {
     },
     {
       path: "profile",
-      children: [
-        {
-          path: "",
-          element: <Profile />,
-        },
-        {
-          path: "edit",
-          element: <ProfileEdit />,
-        },
-      ],
+      element: <Profile />,
     },
     {
       path: "login",
-      element: <SignIn />,
+      element: <Login />,
     },
     {
-      path: "register",
-      element: <SignUp />,
+      path: "signup",
+      element: <Signup />,
+    },
+    {
+      path: "logout",
+      element: <Logout />,
     },
     {
       path: "learn",
