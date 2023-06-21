@@ -37,7 +37,7 @@ export default function Cart() {
           })}
         </Grid>
         <Grid item xs={4}>
-          <CartConfirm />
+          <CartConfirm cart={cart} />
         </Grid>
       </Grid>
     </Container>
