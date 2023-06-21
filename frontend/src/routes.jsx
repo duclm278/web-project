@@ -23,7 +23,7 @@ export default function Router() {
       element: <SearchResults />,
     },
     {
-      path: "course",
+      path: "course/:courseId",
       element: <Course />,
     },
     {
@@ -45,7 +45,7 @@ export default function Router() {
     {
       path: "learn",
       element: <Learning />,
-    }
+    },
   ]);
 
   return routes;
