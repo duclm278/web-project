@@ -18,7 +18,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { alpha, styled } from "@mui/material/styles";
-import * as React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const pages = [
@@ -63,7 +63,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
+    // Vertical padding + Font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
@@ -74,8 +74,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -250,8 +250,12 @@ function ResponsiveAppBar() {
             <Tooltip title="Settings">
               <IconButton onClick={handleOpenUserMenu}>
                 <Avatar
-                  alt="Remy Sharp"
-                  src="https://mui.com/static/images/avatar/2.jpg"
+                  alt={
+                    JSON.parse(localStorage.getItem("user")).firstName +
+                    " " +
+                    JSON.parse(localStorage.getItem("user")).lastName
+                  }
+                  src="#"
                   sx={{ width: 32, height: 32 }}
                 />
               </IconButton>
