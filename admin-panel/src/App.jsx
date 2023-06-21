@@ -1,14 +1,27 @@
-import { Admin, Resource } from "react-admin";
-import restProvider from "ra-data-simple-rest";
-import CourseList from "./components/course/CourseList";
+import simpleRestProvider from "ra-data-simple-rest";
+import { fetchUtils, Admin, Resource } from "react-admin";
+import authProvider from "./authProvider";
 import CourseCreate from "./components/course/CourseCreate";
 import CourseEdit from "./components/course/CourseEdit";
-import OrderList from "./components/order/OrderList";
+import CourseList from "./components/course/CourseList";
 import OrderEdit from "./components/order/OrderEdit";
+import OrderList from "./components/order/OrderList";
+
+const httpClient = (url, options = {}) => {
+  if (!options.headers) {
+    options.headers = new Headers({ Accept: "application/json" });
+  }
+  const token = localStorage.getItem("token");
+  options.headers.set("Authorization", `Bearer ${token}`);
+  return fetchUtils.fetchJson(url, options);
+};
 
 function App() {
   return (
-    <Admin dataProvider={restProvider("http://localhost:3001/api")}>
+    <Admin
+      authProvider={authProvider}
+      dataProvider={simpleRestProvider("http://localhost:3001/api", httpClient)}
+    >
       <Resource
         name="courses"
         list={CourseList}
