@@ -49,10 +49,8 @@ export default function Profile() {
                 fontWeight="bold"
                 align="center"
               >
-                John Doe
-              </Typography>
-              <Typography variant="subtitle1" align="center">
-                Since 2021
+                {JSON.parse(localStorage.getItem("user")).firstName}{" "}
+                {JSON.parse(localStorage.getItem("user")).lastName}
               </Typography>
             </Box>
           </Grid>
