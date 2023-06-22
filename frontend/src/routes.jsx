@@ -1,5 +1,6 @@
 import { Navigate, useRoutes } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
+import NotFound from "./pages/404";
 import Cart from "./pages/cart";
 import Checkout from "./pages/checkout";
 import Course from "./pages/course";
@@ -58,6 +59,10 @@ export default function Router() {
     {
       path: "/learn/:courseId",
       element: user ? <Learning /> : <Navigate to="/login" />,
+    },
+    {
+      path: "*",
+      element: <NotFound />,
     },
   ]);
 
