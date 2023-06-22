@@ -1,5 +1,5 @@
 import { Container, Grid, Typography } from "@mui/material";
-import { useCallback, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import CartItem from "./CartItem";
 import CartConfirm from "./CartConfirm";
 import cartService from "../../services/cart";
@@ -7,7 +7,7 @@ import cartService from "../../services/cart";
 export default function Cart() {
   const [cart, setCart] = useState(null);
 
-  const fetchCart = useCallback(async () => {
+  async function fetchCart() {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       const data = await cartService.getUserCart(user._id, user.token);
@@ -15,11 +15,11 @@ export default function Cart() {
     } catch (e) {
       alert(e);
     }
-  }, []);
+  }
 
   useEffect(() => {
     fetchCart();
-  }, [fetchCart]);
+  }, []);
 
   return (
     <Container sx={{ marginTop: 5 }}>
@@ -33,12 +33,20 @@ export default function Cart() {
           </Typography>
           <hr />
           {cart?.items?.map((item) => {
-            return <CartItem courseId={item.courseId} key={item.courseId} />;
+            return (
+              <CartItem
+                courseId={item.courseId}
+                key={item.courseId}
+                fetchCart={fetchCart}
+              />
+            );
           })}
         </Grid>
-        <Grid item xs={4}>
-          <CartConfirm cart={cart} />
-        </Grid>
+        {cart?.items?.length > 0 && (
+          <Grid item xs={4}>
+            <CartConfirm cart={cart} />
+          </Grid>
+        )}
       </Grid>
     </Container>
   );
