@@ -13,7 +13,7 @@ router.post("/login", async (req, res) => {
   try {
     const { _id, isAdmin, email } = await User.login(req.body);
     if (!isAdmin) {
-      return res.status(401).send("Unauthorized");
+      return res.status(401).json({ error: "Unauthorized" });
     }
 
     // Create token

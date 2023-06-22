@@ -1,9 +1,9 @@
 import axios from "axios";
 
 const VITE_APP_BASE_URL =
-  import.meta.env.VITE_APP_BASE_URL || "http://localhost:3001";
+  import.meta.env.VITE_APP_BASE_URL || "http://localhost:3001/api";
 
-const baseUrl = VITE_APP_BASE_URL + "/api/users";
+const baseUrl = VITE_APP_BASE_URL + "/users";
 console.log("VITE_APP_BASE_URL", import.meta.env.VITE_APP_BASE_URL);
 
 const login = async (email, password) => {
