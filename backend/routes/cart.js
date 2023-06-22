@@ -16,6 +16,10 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     try {
         const cart = await cartModel.findOne({ userId: req.params.id });
+        if (!cart) {
+            res.status(404).json({ error: "Could not find user cart" });
+            return;
+        }
         res.status(200).json(cart);
     } catch (e) {
         console.log(e);
@@ -46,6 +50,7 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
     try {
         await cartModel.findByIdAndDelete(req.params.id);
+        res.status(200).json({ message: "successful" });
     } catch {
         res.status(400).json({ error: "Could not delete cart" });
     }

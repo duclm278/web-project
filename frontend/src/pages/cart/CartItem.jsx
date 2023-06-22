@@ -16,6 +16,7 @@ export default function CartItem(props) {
         course.price,
         user.token
       );
+      await props.fetchCart();
     } catch (e) {
       console.log(e);
       alert(e);
@@ -25,7 +26,8 @@ export default function CartItem(props) {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const data = await courseService.getCourseById(props.courseId);
+        const user = JSON.parse(localStorage.getItem("user"));
+        const data = await courseService.getOne(user.token, props.courseId);
         setCourse(data);
       } catch (e) {
         alert(e);
@@ -82,4 +84,5 @@ export default function CartItem(props) {
 
 CartItem.propTypes = {
   courseId: PropTypes.string,
+  fetchCart: PropTypes.func,
 };
