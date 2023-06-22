@@ -1,12 +1,13 @@
 import { Box, Tab, Tabs, Typography } from "@mui/material";
+import Linkify from "linkify-react";
 import { useState } from "react";
 import ReactPlayer from "react-player";
 
-export default function LearningVideo() {
-  const [value, setValue] = useState(0);
+export default function LearningVideo({ lesson }) {
+  const [tabValue, setTabValue] = useState(0);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setTabValue(newValue);
   };
 
   return (
@@ -19,7 +20,7 @@ export default function LearningVideo() {
         }}
       >
         <ReactPlayer
-          url="https://www.youtube.com/watch?v=7CqJlxBYj-M"
+          url={lesson?.videoUrl}
           origin={window.location.origin}
           controls
           width="100%"
@@ -29,7 +30,7 @@ export default function LearningVideo() {
       </Box>
 
       <Tabs
-        value={value}
+        value={tabValue}
         onChange={handleChange}
         textColor="inherit"
         TabIndicatorProps={{
@@ -42,20 +43,15 @@ export default function LearningVideo() {
         <Tab value={0} label="OVERVIEW" />
         <Tab value={1} label="COMMENTS" />
       </Tabs>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={tabValue} index={0}>
         <Typography component="h2" variant="h6" fontWeight="bold">
-          Introduction to React
+          {lesson?.name}
         </Typography>
-        <Typography component="p" variant="body1" mt={2}>
-          Hello, I am <strong>John Doe</strong>, a web developer from{" "}
-          <strong>London, United Kingdom</strong>. I hold a Master&apos;s Degree
-          in Computer Science from the University of London. I also have a
-          Bachelor&apos;s Degree in Computer Science from the University of
-          London. I have been working as a freelance web developer for the past
-          10 years.
+        <Typography variant="body1" mt={2} sx={{ whiteSpace: "pre-line" }}>
+          <Linkify>{lesson?.description}</Linkify>
         </Typography>
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel value={tabValue} index={1}>
         <Typography component="h2" variant="h6" fontWeight="bold">
           There are no comments yet.
         </Typography>
