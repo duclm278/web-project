@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
-        const cart = await cartModel.find({ userId: id });
+        const cart = await cartModel.findOne({ userId: req.params.id });
         res.status(200).json(cart);
     } catch (e) {
         console.log(e);
@@ -27,16 +27,18 @@ router.post("/", async (req, res) => {
     try {
         const cart = await cartModel.create(req.body);
         res.status(201).json(cart);
-    } catch {
+    } catch (e) {
+        console.log(e);
         res.status(400).json({ error: "Could not create cart" });
     }
 });
 
 router.put("/:id", async (req, res) => {
     try {
-        const cart = await cartModel.findByIdAndUpdate(req.params.id, req.body);
-        res.status(201).json(cart);
-    } catch {
+        const cart = await cartModel.findByIdAndUpdate(req.params.id, req.body.cart);
+        res.status(200).json(cart);
+    } catch (e) {
+        console.log(e);
         res.status(400).json({ error: "Could not update cart" });
     }
 });

@@ -3,6 +3,7 @@ import CourseDetails from "./CourseDetails";
 import CoursePurchase from "./CoursePurchase";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import courseService from "../../services/course";
 
 export default function Course() {
   const params = useParams();
@@ -11,11 +12,7 @@ export default function Course() {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3001/api/courses/${params.courseId}`
-        );
-        const data = await response.json();
-        console.log(data);
+        const data = await courseService.getCourseById(params.courseId);
         setCourse(data);
       } catch (e) {
         console.log(e);
@@ -32,10 +29,7 @@ export default function Course() {
           <CourseDetails course={course} />
         </Grid>
         <Grid item xs={4}>
-          <CoursePurchase
-            image={course.coverImage}
-            price={course?.price ?? 0}
-          />
+          <CoursePurchase course={course} />
         </Grid>
       </Grid>
     </Container>
