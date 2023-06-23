@@ -1,4 +1,3 @@
-import AdbIcon from "@mui/icons-material/Adb";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -8,7 +7,6 @@ import { Badge } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
@@ -99,12 +97,11 @@ function ResponsiveAppBar() {
       sx={{
         position: "relative",
         borderBottom: (t) => `1px solid ${t.palette.divider}`,
-        background: "#1c1d1f",
+        background: "#29303b",
       }}
     >
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+        <Toolbar variant="dense" disableGutters>
           <Typography
             variant="h6"
             noWrap
@@ -166,7 +163,6 @@ function ResponsiveAppBar() {
             </Menu>
           </Box>
 
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -186,22 +182,18 @@ function ResponsiveAppBar() {
             UDEMY
           </Typography>
 
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
             {pages.map((page) => (
               <Link
                 key={page.title}
                 to={page.path}
                 style={{
                   color: "inherit",
+                  marginX: 2,
                   textDecoration: "none",
                 }}
               >
-                <Button
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page.title}
-                </Button>
+                {page.title}
               </Link>
             ))}
           </Box>
