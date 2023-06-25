@@ -25,7 +25,7 @@ router.get("/:id", async (req, res) => {
     return res.status(404).json({ error: "No such course" });
   }
 
-  const course = joinedCourses.find((course) => course._id === id);
+  const course = joinedCourses.find((course) => course.courseId === id);
   if (!course) {
     return res.status(404).json({ error: "No such course" });
   }

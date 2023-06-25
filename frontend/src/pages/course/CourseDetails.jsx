@@ -1,8 +1,25 @@
 import PropTypes from "prop-types";
 import { Box, Typography, Rating, Paper } from "@mui/material";
 import CourseContent from "./CourseContent";
+import { useState, useEffect } from "react";
+import ratingService from "../../services/rating";
 
 export default function CourseDetail(props) {
+  const [rating, setRating] = useState(0);
+
+  useEffect(() => {
+    const fetchTotalRating = async () => {
+      try {
+        const totalRating = await ratingService.getTotalRating(props.course.id);
+        setRating(totalRating.totalRating);
+      } catch (err) {
+        setRating(0);
+      }
+    };
+
+    fetchTotalRating();
+  }, [props.course.id]);
+
   return (
     <Box>
       <Box>
@@ -10,9 +27,9 @@ export default function CourseDetail(props) {
           <b>{props.course.name}</b>
         </Typography>
         <Box sx={{ display: "flex", marginBottom: 2 }}>
-          <Rating name="read-only" value={4.5} precision={0.5} readOnly />
+          <Rating name="read-only" value={rating} precision={0.1} readOnly />
           <Typography variant="body" component="p">
-            (0 ratings)
+            {rating}
           </Typography>
           <Typography variant="body" component="p" sx={{ marginLeft: 1 }}>
             {props.course.studentsEnrolled} students

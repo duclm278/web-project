@@ -21,7 +21,7 @@ export default function CoursePurchase(props) {
   useEffect(() => {
     const checkBought = async () => {
       try {
-        await enrollService.getOne(user, props.course.id);
+        await enrollService.getOne(user.token, props.course.id);
         setBought(true);
       } catch {
         setBought(false);
@@ -29,7 +29,7 @@ export default function CoursePurchase(props) {
     };
 
     checkBought();
-  }, []);
+  }, [user, props.course.id]);
 
   const addToCart = async () => {
     try {
@@ -48,7 +48,7 @@ export default function CoursePurchase(props) {
 
   return (
     <Card sx={{ maxWidth: 400 }}>
-      <CardMedia height="120" component="img" src={props.course.coverImage} />
+      <CardMedia height="150" component="img" src={props.course.coverImage} />
       <CardContent>
         <Box
           paddingY={2}
@@ -61,7 +61,7 @@ export default function CoursePurchase(props) {
           </Typography>
           <Button
             onClick={addToCart}
-            disabled={!bought}
+            disabled={bought}
             variant="contained"
             sx={{ marginTop: 2, paddingY: 2 }}
           >
