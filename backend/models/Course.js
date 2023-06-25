@@ -39,4 +39,6 @@ const courseSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
+courseSchema.index({ name: 'text', description: 'text' });
+
 module.exports = mongoose.model("Course", courseSchema);
