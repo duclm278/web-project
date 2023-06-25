@@ -9,13 +9,30 @@ import {
 import PropTypes from "prop-types";
 import { formatPrice } from "../../utils/formatter";
 import cartService from "../../services/cart";
+import enrollService from "../../services/enroll";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 export default function CoursePurchase(props) {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [bought, setBought] = useState(false);
+
+  useEffect(() => {
+    const checkBought = async () => {
+      try {
+        await enrollService.getOne(user, props.course.id);
+        setBought(true);
+      } catch {
+        setBought(false);
+      }
+    };
+
+    checkBought();
+  }, []);
+
   const addToCart = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
       await cartService.addToCart(
         user._id,
         props.course.id,
@@ -42,10 +59,14 @@ export default function CoursePurchase(props) {
           <Typography variant="h4" component="h2" textAlign={"center"}>
             <b>₫{formatPrice(props.course?.price ?? 0)}</b>
           </Typography>
-          <Button onClick={addToCart} variant="contained" sx={{ marginY: 2 }}>
+          <Button
+            onClick={addToCart}
+            disabled={!bought}
+            variant="contained"
+            sx={{ marginTop: 2, paddingY: 2 }}
+          >
             Add to cart
           </Button>
-          <Button variant="outlined">Buy now</Button>
         </Box>
       </CardContent>
     </Card>
