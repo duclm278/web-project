@@ -21,13 +21,15 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   const { joinedCourses } = req.user;
+
+  // Make sure joinedCourse not null to find
   if (!joinedCourses) {
-    return res.status(404).json({ error: "No such course" });
+    return res.status(404).json({ error: "Haven't joined course" });
   }
 
   const course = joinedCourses.find((course) => course.courseId === id);
   if (!course) {
-    return res.status(404).json({ error: "No such course" });
+    return res.status(404).json({ error: "Haven't joined course" });
   }
 
   res.status(200).json(course);

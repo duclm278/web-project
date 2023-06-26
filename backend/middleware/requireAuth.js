@@ -10,10 +10,10 @@ const requireAuth = async (req, res, next) => {
   }
 
   const token = authorization.split(" ")[1];
-  const SECRET = process.env.SECRET || "hello";
+  const JWT_SECRET = process.env.JWT_SECRET || "hello";
 
   try {
-    const { _id } = jwt.verify(token, SECRET);
+    const { _id } = jwt.verify(token, JWT_SECRET);
 
     req.user = await User.findOne({ _id });
     next();
