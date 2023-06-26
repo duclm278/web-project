@@ -33,6 +33,8 @@ app.use("/api/users", userRouter);
 app.use("/api/enroll", enrollRouter);
 app.use("/api/progress", progressRouter);
 app.use("/api/checkout", checkoutRouter);
+app.use("/api/ratings", ratingRouter);
+app.use("/api/notes", noteRouter);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
