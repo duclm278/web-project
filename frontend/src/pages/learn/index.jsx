@@ -50,7 +50,7 @@ export default function Learning() {
 
     const fetchCourse = async () => {
       try {
-        course = await courseService.getOne(token, courseId);
+        course = await courseService.getOne(courseId);
         setLessons(course.lessons);
       } catch (err) {
         console.log(err);

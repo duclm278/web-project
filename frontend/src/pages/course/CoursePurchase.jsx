@@ -59,14 +59,23 @@ export default function CoursePurchase(props) {
           <Typography variant="h4" component="h2" textAlign={"center"}>
             <b>₫{formatPrice(props.course?.price ?? 0)}</b>
           </Typography>
-          <Button
-            onClick={addToCart}
-            disabled={bought}
-            variant="contained"
-            sx={{ marginTop: 2, paddingY: 2 }}
-          >
-            Add to cart
-          </Button>
+          {bought ? (
+            <Button
+              onClick={() => navigate(`/learn/${props.course.id}`)}
+              variant="contained"
+              sx={{ marginTop: 2, paddingY: 2 }}
+            >
+              Go to course
+            </Button>
+          ) : (
+            <Button
+              onClick={addToCart}
+              variant="contained"
+              sx={{ marginTop: 2, paddingY: 2 }}
+            >
+              Add to cart
+            </Button>
+          )}
         </Box>
       </CardContent>
     </Card>
