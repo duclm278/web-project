@@ -8,6 +8,8 @@ import enrollService from "../../services/enroll";
 import cartService from "../../services/cart";
 import { useNavigate } from "react-router-dom";
 
+const BASE_URL =
+  import.meta.env.VITE_APP_BASE_URL || "http://localhost:3001/api";
 const STRIPE_KEY = import.meta.env.VITE_STRIPE_KEY || "";
 
 export default function CartConfirm(props) {
@@ -23,7 +25,7 @@ export default function CartConfirm(props) {
   useEffect(() => {
     const makePaymentRequest = async () => {
       try {
-        await axios.post("http://localhost:3001/api/checkout", {
+        await axios.post(`${BASE_URL}/checkout`, {
           tokenId: stripeToken?.id,
           amount: amount,
         });

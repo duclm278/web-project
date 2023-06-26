@@ -18,4 +18,12 @@ const getOne = async (id) => {
   return response.data;
 };
 
-export default { getAll, getOne };
+const search = async (query) => {
+  console.log(query);
+  const response = await axios.get(`${baseUrl}/search`, {
+    params: { query: query },
+  });
+  return response.data;
+};
+
+export default { getAll, getOne, search };

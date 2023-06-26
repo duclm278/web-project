@@ -17,7 +17,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { alpha, styled } from "@mui/material/styles";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const pages = [
   { title: "Home", path: "/" },
@@ -74,6 +74,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -88,6 +90,15 @@ function ResponsiveAppBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleChange = (e) => {
+    setQuery(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/search?query=${query}`);
   };
 
   return (
@@ -203,7 +214,13 @@ function ResponsiveAppBar() {
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
-              <StyledInputBase placeholder="Search…" />
+              <form onSubmit={handleSubmit}>
+                <StyledInputBase
+                  value={query}
+                  onChange={handleChange}
+                  placeholder="Search…"
+                />
+              </form>
             </Search>
           </Box>
 
