@@ -219,15 +219,23 @@ function ResponsiveAppBar() {
               </Badge>
             </IconButton>
 
-            <IconButton
-              size="large"
-              color="inherit"
-              sx={{ display: { xs: "none", md: "inline" } }}
+            <Link
+              key="cart"
+              to="/cart"
+              style={{
+                color: "inherit",
+              }}
             >
-              <Badge badgeContent={0} color="error">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
+              <IconButton
+                size="large"
+                color="inherit"
+                sx={{ display: { xs: "none", md: "inline" } }}
+              >
+                <Badge badgeContent={0} color="error">
+                  <ShoppingCartIcon />
+                </Badge>
+              </IconButton>
+            </Link>
 
             <IconButton
               size="large"

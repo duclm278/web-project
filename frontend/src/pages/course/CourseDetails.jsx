@@ -32,7 +32,7 @@ export default function CourseDetail(props) {
             {rating}
           </Typography>
           <Typography variant="body" component="p" sx={{ marginLeft: 1 }}>
-            {props.course.studentsEnrolled} students
+            ({props.course.studentsEnrolled} students)
           </Typography>
         </Box>
       </Box>
