@@ -23,6 +23,7 @@ const progressRouter = require("./routes/progress");
 const checkoutRouter = require("./routes/checkout");
 const ratingRouter = require("./routes/rating");
 const noteRouter = require("./routes/note");
+const quizRouter = require("./routes/quiz");
 
 app.use("/api/courses", courseRouter);
 app.use("/api/carts", cartRouter);
@@ -35,6 +36,7 @@ app.use("/api/progress", progressRouter);
 app.use("/api/checkout", checkoutRouter);
 app.use("/api/ratings", ratingRouter);
 app.use("/api/notes", noteRouter);
+app.use("/api/quizzes", quizRouter);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);

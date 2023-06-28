@@ -11,7 +11,9 @@ router.get("/", async (req, res) => {
   if (!joinedCourses) {
     joinedCourses = [];
   }
-  const joinedCourseIds = joinedCourses.map((course) => course.courseId);
+  const joinedCourseIds = joinedCourses.map((course) =>
+    course.courseId.toString()
+  );
   const courses = await Course.find({ _id: { $in: joinedCourseIds } }).select(
     "name description coverImage"
   );
@@ -27,7 +29,9 @@ router.get("/:id", async (req, res) => {
     return res.status(404).json({ error: "Haven't joined course" });
   }
 
-  const course = joinedCourses.find((course) => course.courseId === id);
+  const course = joinedCourses.find(
+    (course) => course.courseId.toString() === id
+  );
   if (!course) {
     return res.status(404).json({ error: "Haven't joined course" });
   }
@@ -44,7 +48,12 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: "Expected object with courseId" });
   }
 
-  if (joinedCourses.find((course) => course.courseId === req.body.courseId)) {
+  // Convert to string to compare
+  if (
+    joinedCourses.find(
+      (course) => course.courseId.toString() === req.body.courseId
+    )
+  ) {
     return res.status(400).json({ error: "Already enrolled" });
   }
 
@@ -85,21 +94,6 @@ router.delete("/:id", async (req, res) => {
     { $inc: { studentCount: -1 } },
     { new: true }
   );
-
-  res.status(200).json(user.joinedCourses);
-});
-
-router.put("/:id", async (req, res) => {
-  const { _id } = req.user;
-  const { id: courseId } = req.params;
-  const user = await User.findOneAndUpdate(
-    { _id, "joinedCourses.courseId": courseId },
-    { $set: { "joinedCourses.$.completedLessons": req.body } },
-    { new: true }
-  );
-  if (!user) {
-    return res.status(404).json({ error: "No such user" });
-  }
 
   res.status(200).json(user.joinedCourses);
 });

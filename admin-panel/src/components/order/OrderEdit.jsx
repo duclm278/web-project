@@ -4,10 +4,10 @@ const OrderEdit = (props) => {
   return (
     <Edit title="Edit the order" {...props}>
       <SimpleForm>
-        <TextInput disabled source="id" />
-        <TextInput disabled source="userId" />
+        <TextInput source="id" fullWidth disabled />
+        <TextInput source="userId" fullWidth disabled />
         <NumberInput source="amount" />
-        <TextInput disabled source="address" />
+        <TextInput source="address" fullWidth disabled />
         <TextInput source="status" />
       </SimpleForm>
     </Edit>

@@ -1,10 +1,8 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose;
 const bcrypt = require("bcrypt");
-const validator = require("validator");
 
-const Schema = mongoose.Schema;
-
-const userSchema = new Schema(
+const userSchema = Schema(
   {
     isAdmin: {
       type: Boolean,
@@ -33,10 +31,21 @@ const userSchema = new Schema(
     joinedCourses: {
       type: [
         {
-          courseId: String,
+          courseId: {
+            type: Schema.Types.ObjectId,
+            ref: "Course",
+          },
           userRating: Number,
-          currentLesson: String,
-          completedLessons: [String],
+          currentLesson: {
+            type: Schema.Types.ObjectId,
+            ref: "Lesson",
+          },
+          completedLessons: [
+            {
+              type: Schema.Types.ObjectId,
+              ref: "Lesson",
+            },
+          ],
         },
       ],
       default: [],

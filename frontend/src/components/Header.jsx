@@ -1,3 +1,4 @@
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -76,6 +77,8 @@ function ResponsiveAppBar() {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
+
+  const user = localStorage.getItem("user");
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -264,19 +267,32 @@ function ResponsiveAppBar() {
               </Badge>
             </IconButton>
 
-            <Tooltip title="Settings">
-              <IconButton onClick={handleOpenUserMenu}>
-                <Avatar
-                  alt={
-                    JSON.parse(localStorage.getItem("user")).firstName +
-                    " " +
-                    JSON.parse(localStorage.getItem("user")).lastName
-                  }
-                  src="#"
-                  sx={{ width: 32, height: 32 }}
-                />
+            {user ? (
+              <Tooltip title="Settings">
+                <IconButton onClick={handleOpenUserMenu}>
+                  <Avatar
+                    alt={
+                      JSON.parse(localStorage.getItem("user")).firstName +
+                      " " +
+                      JSON.parse(localStorage.getItem("user")).lastName
+                    }
+                    src="#"
+                    sx={{ width: 32, height: 32 }}
+                  />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <IconButton
+                size="large"
+                color="inherit"
+                sx={{ display: { xs: "none", md: "inline" } }}
+                onClick={() => navigate("/login")}
+              >
+                <Badge badgeContent={0} color="error">
+                  <AccountCircleIcon />
+                </Badge>
               </IconButton>
-            </Tooltip>
+            )}
             <Menu
               id="menu-appbar"
               anchorEl={anchorElUser}

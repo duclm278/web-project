@@ -22,7 +22,10 @@ export function NoteRead({
         underline="hover"
         variant="body1"
         fontWeight="bold"
-        onClick={(e) => handleSeek(e, note.time)}
+        onClick={(e) => {
+          e.preventDefault();
+          handleSeek(note.time);
+        }}
         sx={{ mb: 1 }}
       >
         {formatTime(note.time)}
