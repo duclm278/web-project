@@ -5,7 +5,6 @@ import yaml from "js-yaml";
 import { useState } from "react";
 import { Create, SaveButton, SimpleForm, Toolbar } from "react-admin";
 import { useNavigate } from "react-router-dom";
-import "./Quiz.css";
 import sampleYaml from "./sampleYaml";
 
 const VITE_APP_BASE_URL =

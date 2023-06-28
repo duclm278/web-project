@@ -11,7 +11,6 @@ import {
   useGetRecordId,
 } from "react-admin";
 import { useNavigate } from "react-router-dom";
-import "./Quiz.css";
 
 const VITE_APP_BASE_URL =
   import.meta.env.VITE_APP_BASE_URL || "http://localhost:3001/api";
