@@ -52,9 +52,18 @@ router.get("/search", async (req, res) => {
 // Get course by id with lessons populated
 router.get("/:id", async (req, res) => {
   try {
-    const course = await courseModel
-      .findById(req.params.id)
-      .populate("lessons");
+    const course = await courseModel.findById(req.params.id).populate([
+      {
+        path: "lessons",
+        transform: (lesson) => {
+          return {
+            // Required for react-admin to work
+            id: lesson._id,
+            ...lesson._doc,
+          };
+        },
+      },
+    ]);
     res.status(200).json({ id: course._id, ...course._doc });
   } catch {
     res.status(400).json({ error: "Could not retrieve course" });
@@ -85,11 +94,27 @@ router.put("/:id", async (req, res) => {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
+  // Get lessons from request body
+  const lessons = req.body?.lessons;
+  if (!lessons) {
+    return res.status(400).json({ error: "No lessons provided" });
+  }
+
+  // Store as array of lesson ids
+  const newLessons = lessons.map((l) => l._id || l.id);
+  // const newCourse = { ...req.body, lessons: newLessons };
+
   try {
-    const course = await courseModel.findByIdAndUpdate(id, req.body);
-    res.status(201).json({ id: course._id, ...course._doc });
-  } catch {
-    res.status(400).json({ error: "Could not update course" });
+    const course = await courseModel.findByIdAndUpdate(
+      id,
+      { ...req.body, lessons: newLessons },
+      { new: true }
+    );
+    return res.status(201).json({ id: course._id, ...course._doc });
+  } catch (err) {
+    // res.status(400).json({ error: "Could not update course" });
+    console.log(err);
+    return res.status(400).json({ error: err.message });
   }
 });
 

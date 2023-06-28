@@ -69,7 +69,7 @@ router.post("/", async (req, res) => {
   // Update student count
   const course = await Course.findByIdAndUpdate(
     req.body.courseId,
-    { $inc: { studentCount: 1 } },
+    { $inc: { studentsEnrolled: 1 } },
     { new: true }
   );
 
@@ -91,7 +91,7 @@ router.delete("/:id", async (req, res) => {
   // Update student count
   const course = await Course.findByIdAndUpdate(
     courseId,
-    { $inc: { studentCount: -1 } },
+    { $inc: { studentsEnrolled: -1 } },
     { new: true }
   );
 
