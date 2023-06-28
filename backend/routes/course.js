@@ -9,7 +9,10 @@ router.get("/", async (req, res) => {
     if (!popular) {
       courses = await courseModel.find({});
     } else {
-      courses = await courseModel.find({}).sort({ studentsEnrolled: -1 }).limit(5);
+      courses = await courseModel
+        .find({})
+        .sort({ studentsEnrolled: -1 })
+        .limit(5);
     }
     res.header("Access-Control-Expose-Headers", "Content-Range");
     res.header("Content-Range", `courses 0-20/${courses.length}`);
@@ -37,13 +40,16 @@ router.get("/search", async (req, res) => {
     });
     res.status(200).json(foundCourses);
   } catch (e) {
-    res.status(404).json({ error: "No such course found" })
+    res.status(404).json({ error: "No such course found" });
   }
-})
+});
 
+// Get course by id with lessons populated
 router.get("/:id", async (req, res) => {
   try {
-    const course = await courseModel.findById(req.params.id);
+    const course = await courseModel
+      .findById(req.params.id)
+      .populate("lessons");
     res.status(200).json({ id: course._id, ...course._doc });
   } catch {
     res.status(400).json({ error: "Could not retrieve course" });

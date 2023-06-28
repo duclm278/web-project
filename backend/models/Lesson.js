@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
-const lessonSchema = new mongoose.Schema(
+const lessonSchema = Schema(
   {
     name: {
       type: String,
@@ -11,35 +12,33 @@ const lessonSchema = new mongoose.Schema(
       enum: ["video", "quiz"],
       required: true,
     },
-    videoUrl: {
-      type: String,
-    },
     description: {
       type: String,
-      default: "",
+      default: function () {
+        return this.type === "quiz" ? null : "";
+      },
     },
     lengthSeconds: {
       type: Number,
+      min: 0,
+      default: 0,
     },
-    quizDetails: {
-      quizTitle: String,
-      quizSynopsis: String,
-      nrOfQuestions: String,
-      questions: [
-        {
-          question: String,
-          questionType: String,
-          questionPic: String,
-          answerSelectionType: String,
-          answers: [String],
-          correctAnswer: String,
-          messageForCorrectAnswer: String,
-          messageForIncorrectAnswer: String,
-          explanation: String,
-          point: String,
-        },
-      ],
+
+    // Video specific fields
+    videoUrl: {
+      type: String,
+      required: function () {
+        return this.type === "video";
+      },
     },
+
+    // Quiz specific fields
+    questions: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Question",
+      },
+    ],
   },
   { timestamps: true }
 );

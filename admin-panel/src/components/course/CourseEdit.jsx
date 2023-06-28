@@ -1,14 +1,20 @@
-import { Edit, NumberInput, SimpleForm, TextInput } from "react-admin";
+import {
+  Edit,
+  NumberInput,
+  SimpleForm,
+  TextInput,
+  required,
+} from "react-admin";
 
 const CourseEdit = (props) => {
   return (
     <Edit title="Edit the course" {...props}>
       <SimpleForm>
-        <TextInput disabled source="id" />
-        <TextInput source="name" />
-        <NumberInput source="price" />
-        <TextInput source="coverImage" />
-        <TextInput multiline source="description" />
+        <TextInput source="id" fullWidth disabled />
+        <TextInput source="name" fullWidth validate={required()} />
+        <NumberInput source="price" fullWidth validate={required()} />
+        <TextInput source="coverImage" fullWidth validate={required()} />
+        <TextInput source="description" fullWidth multiline />
       </SimpleForm>
     </Edit>
   );

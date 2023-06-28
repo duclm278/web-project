@@ -53,18 +53,13 @@ export default function LearningVideo({ lesson, onEnded }) {
     }
   }, [mdFocus, tab]);
 
-  const handleSeek = (e, seconds) => {
-    e.preventDefault();
+  const handleSeek = (seconds) => {
     playerRef.current.seekTo(seconds, "seconds");
     requestAnimationFrame(() => {
       if (playerContainerRef.current?.scrollIntoView)
         playerContainerRef.current?.scrollIntoView();
     });
     setPlaying(true);
-  };
-
-  const handleTabChange = (event, newValue) => {
-    setTab(newValue);
   };
 
   const handleTimeMarked = async () => {
@@ -144,6 +139,7 @@ export default function LearningVideo({ lesson, onEnded }) {
     setLoading(false);
   };
 
+  console.log(`${lesson?.videoUrl}?t=${0}`);
   return (
     <Box>
       <Box
@@ -163,6 +159,7 @@ export default function LearningVideo({ lesson, onEnded }) {
           width="100%"
           height="100%"
           playing={playing}
+          onReady={() => handleSeek(0)}
           onPlay={() => setPlaying(true)}
           onEnded={onEnded}
           onProgress={(progress) => {
@@ -176,7 +173,7 @@ export default function LearningVideo({ lesson, onEnded }) {
           variant="scrollable"
           scrollButtons="auto"
           value={tab}
-          onChange={handleTabChange}
+          onChange={(e, newValue) => setTab(newValue)}
           textColor="inherit"
           TabIndicatorProps={{
             style: {
@@ -187,8 +184,8 @@ export default function LearningVideo({ lesson, onEnded }) {
         >
           <Tab value={0} label="OVERVIEW" />
           <Tab value={1} label="NOTES" />
-          <Tab value={2} label="COMMENTS" />
-          <Tab value={3} label="RATINGS" />
+          {/* <Tab value={2} label="COMMENTS" /> */}
+          {/* <Tab value={3} label="RATINGS" /> */}
         </Tabs>
         <Button variant="contained" color="primary" onClick={handleTimeMarked}>
           Stop to add note at {formatTime(secondsElapsed)}
@@ -215,6 +212,12 @@ export default function LearningVideo({ lesson, onEnded }) {
             setTimeMarked={setTimeMarked}
             handleNoteCreate={handleNoteCreate}
           />
+        )}
+
+        {notes.length === 0 && (
+          <Typography component="h2" variant="h6" fontWeight="bold">
+            There are no notes yet.
+          </Typography>
         )}
 
         {notes.map((note) => (
@@ -246,11 +249,11 @@ export default function LearningVideo({ lesson, onEnded }) {
         </Typography>
       </TabPanel>
 
-      <TabPanel value={tab} index={3}>
+      {/* <TabPanel value={tab} index={3}>
         <Typography component="h2" variant="h6" fontWeight="bold">
           There are no ratings yet.
         </Typography>
-      </TabPanel>
+      </TabPanel> */}
     </Box>
   );
 }
