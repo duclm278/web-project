@@ -145,6 +145,3 @@ dist
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/node
-
-# OAuth 2.0
-oauth2.keys.json
