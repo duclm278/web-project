@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 const courseRouter = require("./routes/course");
+const lessonRouter = require("./routes/lesson");
 const cartRouter = require("./routes/cart");
 const orderRouter = require("./routes/order");
 const uploadRouter = require("./routes/upload");
@@ -26,6 +27,7 @@ const noteRouter = require("./routes/note");
 const quizRouter = require("./routes/quiz");
 
 app.use("/api/courses", courseRouter);
+app.use("/api/lessons", lessonRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/upload", uploadRouter);

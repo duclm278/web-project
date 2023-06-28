@@ -17,7 +17,12 @@ const courseSchema = Schema(
       type: Number,
       required: true,
     },
-    lessons: [Lesson.schema],
+    lessons: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Lesson",
+      },
+    ],
     totalRating: {
       type: Number,
       default: 0,

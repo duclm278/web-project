@@ -44,9 +44,12 @@ router.get("/search", async (req, res) => {
   }
 });
 
+// Get course by id with lessons populated
 router.get("/:id", async (req, res) => {
   try {
-    const course = await courseModel.findById(req.params.id);
+    const course = await courseModel
+      .findById(req.params.id)
+      .populate("lessons");
     res.status(200).json({ id: course._id, ...course._doc });
   } catch {
     res.status(400).json({ error: "Could not retrieve course" });

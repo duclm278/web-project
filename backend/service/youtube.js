@@ -51,10 +51,14 @@ const getCourseDetails = async (playlistID) => {
   }
 
   const course = {
-    name: playlistInfo.data.items[0].snippet.title,
-    description: playlistInfo.data.items[0].snippet.description,
+    name: playlistInfo.data.items[0].snippet?.title || "Untitled Course",
+    description: playlistInfo.data.items[0].snippet?.description || "",
     lessons: videos,
-    coverImage: playlistInfo.data.items[0].snippet.thumbnails.standard.url,
+    coverImage:
+      playlistInfo.data.items[0].snippet.thumbnails?.standard?.url ||
+      playlistInfo.data.items[0].snippet.thumbnails?.medium?.url ||
+      playlistInfo.data.items[0].snippet.thumbnails?.high?.url ||
+      "https://placehold.co/600x400",
   };
 
   return course;
