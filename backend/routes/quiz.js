@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
   if (req.query.lessonId) {
     query.lessonId = req.query.lessonId;
   }
-  quizzes = await Quiz.find(query).sort({ createdAt: -1 });
+  quizzes = await Quiz.find(query).sort({ createdAt: -1 }).limit(5);
 
   res.header("Access-Control-Expose-Headers", "Content-Range");
   res.header("Content-Range", `quizzes 0-20/${quizzes.length}`);

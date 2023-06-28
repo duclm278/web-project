@@ -184,8 +184,8 @@ export default function LearningVideo({ lesson, onEnded }) {
         >
           <Tab value={0} label="OVERVIEW" />
           <Tab value={1} label="NOTES" />
-          <Tab value={2} label="COMMENTS" />
-          <Tab value={3} label="RATINGS" />
+          {/* <Tab value={2} label="COMMENTS" /> */}
+          {/* <Tab value={3} label="RATINGS" /> */}
         </Tabs>
         <Button variant="contained" color="primary" onClick={handleTimeMarked}>
           Stop to add note at {formatTime(secondsElapsed)}
@@ -249,11 +249,11 @@ export default function LearningVideo({ lesson, onEnded }) {
         </Typography>
       </TabPanel>
 
-      <TabPanel value={tab} index={3}>
+      {/* <TabPanel value={tab} index={3}>
         <Typography component="h2" variant="h6" fontWeight="bold">
           There are no ratings yet.
         </Typography>
-      </TabPanel>
+      </TabPanel> */}
     </Box>
   );
 }
