@@ -1,20 +1,26 @@
-const { mongoose } = require("mongoose");
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
-const ratingSchema = new mongoose.Schema({
+const ratingSchema = Schema(
+  {
     courseId: {
-        type: String,
-        required: true
+      type: Schema.Types.ObjectId,
+      ref: "Course",
+      required: true,
     },
     userId: {
-        type: String,
-        required: true
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
     comment: String,
     score: {
-        type: Number,
-        enum: [1, 2, 3, 4, 5],
-        required: true
-    }
-}, { timestamps: true });
+      type: Number,
+      enum: [1, 2, 3, 4, 5],
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
 module.exports = mongoose.model("Rating", ratingSchema);
