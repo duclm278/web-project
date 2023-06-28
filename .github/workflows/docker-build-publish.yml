@@ -3,12 +3,12 @@ name: Build and Publish
 on:
   push:
     branches:
-      - "dung"
-      - "docker-ci"
+      - "develop"
+      - "main"
   pull_request:
     branches:
-      - "dung"
-      - "docker-ci"
+      - "develop"
+      - "main"
 
 jobs:
   build-and-publish:
