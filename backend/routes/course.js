@@ -1,25 +1,67 @@
+const mongoose = require("mongoose");
 const router = require("express").Router();
 const courseModel = require("../models/Course");
 const requireAuth = require("../middleware/requireAuth");
+const { escapeRegExp } = require("../utils/regex");
 
 router.get("/", async (req, res) => {
+  let query = {};
+
+  // Required by react-admin
+  let filter = null;
+  if (req.query?.filter) {
+    filter = JSON.parse(req.query?.filter);
+  }
+  const joined = "joined";
+  if (filter?.q) {
+    // Search multiple words separated by space
+    let escaped = escapeRegExp(filter.q);
+    escaped = escaped.split("\\ ").join(".*");
+    query.$or = [{ [joined]: { $regex: escaped, $options: "i" } }];
+  }
+  let sort = null;
+  if (req.query?.sort) {
+    sort = JSON.parse(req.query?.sort);
+  }
+  if (sort) {
+    const [field, order] = sort;
+    sort = { [field]: order === "ASC" ? 1 : -1 };
+  }
+
   try {
     let popular = req.query.popular;
     let courses;
     if (!popular) {
-      courses = await courseModel.find({});
+      // courses = await courseModel.find(query);
+      courses = await courseModel.aggregate([
+        // Concat name and stringified _id to allow searching by name + id
+        {
+          $addFields: {
+            [joined]: { $concat: ["$name", { $toString: "$_id" }] },
+          },
+        },
+        sort ? { $sort: sort } : {},
+        { $match: query },
+      ]);
     } else {
-      courses = await courseModel
-        .find({})
-        .sort({ studentsEnrolled: -1 })
-        .limit(5);
+      // courses = await courseModel
+      //   .find(query)
+      //   .sort({ studentsEnrolled: -1 })
+      //   .limit(5);
+      courses = await courseModel.aggregate([
+        { $addFields: { [joined]: { $toString: "$_id" } } },
+        { $match: query },
+        sort ? { $sort: sort } : {},
+        { $sort: { studentsEnrolled: -1 } },
+        { $limit: 5 },
+      ]);
     }
     res.header("Access-Control-Expose-Headers", "Content-Range");
     res.header("Content-Range", `courses 0-20/${courses.length}`);
     courses = courses.map((c) => {
       return {
         id: c._id,
-        ...c._doc,
+        ...c,
       };
     });
     res.status(200).json(courses);
@@ -101,8 +143,7 @@ router.put("/:id", async (req, res) => {
   }
 
   // Store as array of lesson ids
-  const newLessons = lessons.map((l) => l._id || l.id);
-  // const newCourse = { ...req.body, lessons: newLessons };
+  const newLessons = lessons.map((l) => l._id || l.id); // const newCourse = { ...req.body, lessons: newLessons };
 
   try {
     const course = await courseModel.findByIdAndUpdate(
@@ -110,10 +151,41 @@ router.put("/:id", async (req, res) => {
       { ...req.body, lessons: newLessons },
       { new: true }
     );
+
+    // Position targetId at targetIndex, targetId can already be in lessons
+    let { targetId, targetIndex } = req.body;
+    if (targetId && targetIndex) {
+      let oldIndex;
+      targetIndex--;
+      if (typeof targetId == "string") {
+        oldIndex = course.lessons.findIndex((l) => l._id == targetId);
+        targetId = new mongoose.Types.ObjectId(targetId);
+      } else {
+        throw new Error({ message: "targetId must be of type string" });
+      }
+
+      if (oldIndex <= -1) {
+        course.lessons.splice(targetIndex, 0, targetId);
+      } else {
+        if (oldIndex < targetIndex) {
+          console.log("oldIndex < targetIndex", oldIndex, targetIndex);
+          course.lessons.splice(targetIndex, 0, targetId);
+          course.lessons.splice(oldIndex, 1);
+        }
+        if (oldIndex > targetIndex) {
+          console.log("oldIndex > targetIndex", oldIndex, targetIndex);
+          course.lessons.splice(oldIndex, 1);
+          course.lessons.splice(targetIndex, 0, targetId);
+        }
+      }
+
+      await course.save();
+    }
+
     return res.status(201).json({ id: course._id, ...course._doc });
   } catch (err) {
-    // res.status(400).json({ error: "Could not update course" });
     console.log(err);
+    // return res.status(400).json({ error: "Could not update course" });
     return res.status(400).json({ error: err.message });
   }
 });

@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const Lesson = require("./Lesson");
-
 const courseSchema = Schema(
   {
     name: {

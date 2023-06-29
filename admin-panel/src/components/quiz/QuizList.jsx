@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import {
   Datagrid,
   DateField,
@@ -5,16 +6,26 @@ import {
   EditButton,
   List,
   TextField,
+  TextInput,
 } from "react-admin";
 
-export default function OrderList(props) {
+const quizFilters = [
+  <TextInput
+    key="q"
+    label="Search"
+    source="q"
+    alwaysOn
+    placeholder="Partial name and id"
+  />,
+];
+
+export default function quizList(props) {
   return (
-    <List {...props}>
+    <List filters={quizFilters} {...props}>
       <Datagrid>
         <TextField source="id" />
-        <TextField source="lessonId" />
-        <TextField source="quizTitle" />
-        <TextField source="quizSynopsis" />
+        <TextField source="name" />
+        <TextField source="description" />
         <DateField source="createdAt" />
         <EditButton />
         <DeleteButton />
