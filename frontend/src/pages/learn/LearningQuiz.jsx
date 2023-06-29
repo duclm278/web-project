@@ -1,25 +1,19 @@
 import { Box, Button, Stack, Tab, Tabs, Typography } from "@mui/material";
 import Linkify from "linkify-react";
 import React, { useEffect, useRef, useState } from "react";
-import ReactPlayer from "react-player";
+import Quiz from "react-quiz-component";
 import noteService from "../../services/note";
-import { formatTime } from "../../utils/formatter";
 import { NoteCreate } from "./NoteCreate";
 import { NoteRead } from "./NoteRead";
 import { NoteUpdate } from "./NoteUpdate";
 import "./index.css";
 
-export default function LearningVideo({ lesson, onEnded }) {
+export default function LearningQuiz({ lesson, onEnded }) {
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState(0);
-  const [playing, setPlaying] = useState(true);
-  const [secondsElapsed, setSecondsElapsed] = useState(0);
   const [notes, setNotes] = useState([]);
   const [noteContent, setNoteContent] = useState("");
   const [timeMarked, setTimeMarked] = useState(null);
-
-  const playerRef = useRef(null);
-  const playerContainerRef = useRef(null);
 
   useEffect(() => {
     if (!lesson) return;
@@ -41,6 +35,14 @@ export default function LearningVideo({ lesson, onEnded }) {
     fetchNotes();
   }, [lesson]);
 
+  // Convert lesson to quiz
+  const quiz = {
+    quizTitle: lesson.name,
+    quizSynopsis: lesson.description,
+    nrOfQuestions: lesson.questions?.length,
+    ...lesson,
+  };
+
   const mdRef = useRef(null);
   const [mdFocus, setMdFocus] = useState(false);
   useEffect(() => {
@@ -48,26 +50,16 @@ export default function LearningVideo({ lesson, onEnded }) {
     if (mdFocus && tab === 1) {
       setMdFocus(false);
       requestAnimationFrame(() => {
-        if (mdRef.current?.scrollIntoView) mdRef.current?.scrollIntoView();
+        // if (mdRef.current?.scrollIntoView) mdRef.current?.scrollIntoView();
       });
     }
   }, [mdFocus, tab]);
 
-  const handleSeek = (seconds) => {
-    playerRef.current.seekTo(seconds, "seconds");
-    requestAnimationFrame(() => {
-      if (playerContainerRef.current?.scrollIntoView)
-        playerContainerRef.current?.scrollIntoView();
-    });
-    setPlaying(true);
-  };
+  const handleSeek = () => {};
 
   const handleTimeMarked = async () => {
-    setPlaying(false);
-    setTimeout(() => {
-      setTimeMarked(secondsElapsed);
-      setMdFocus(true);
-    }, 500);
+    setTimeMarked(0);
+    setMdFocus(true);
   };
 
   const handleNoteCreate = async () => {
@@ -139,35 +131,24 @@ export default function LearningVideo({ lesson, onEnded }) {
     setLoading(false);
   };
 
+  console.log("lesson", lesson);
   return (
-    <Box>
-      <Box
-        ref={playerContainerRef}
-        sx={{
-          width: "100%",
-          minHeight: 250,
-          maxHeight: 500,
-          aspectRatio: "16/9",
-        }}
-      >
-        <ReactPlayer
-          ref={playerRef}
-          url={lesson?.videoUrl}
-          origin={location.origin}
-          controls
-          width="100%"
-          height="100%"
-          playing={playing}
-          onReady={() => handleSeek(0)}
-          onPlay={() => setPlaying(true)}
-          onEnded={onEnded}
-          onProgress={(progress) => {
-            setSecondsElapsed(Math.floor(progress.playedSeconds));
-          }}
+    <Stack gap={2}>
+      <Box width="100%" minHeight="70vh">
+        <Quiz
+          quiz={quiz}
+          // shuffle={true}
+          // showInstantFeedback={true}
+          continueTillCorrect={true}
+          onComplete={onEnded}
         />
       </Box>
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
+      <Stack
+        direction="row"
+        alignItems="flex-start"
+        justifyContent="space-between"
+      >
         <Tabs
           variant="scrollable"
           scrollButtons="auto"
@@ -184,11 +165,14 @@ export default function LearningVideo({ lesson, onEnded }) {
         >
           <Tab value={0} label="ABOUT" />
           <Tab value={1} label="NOTES" />
-          {/* <Tab value={2} label="COMMENTS" /> */}
-          {/* <Tab value={3} label="RATINGS" /> */}
         </Tabs>
-        <Button variant="contained" color="primary" onClick={handleTimeMarked}>
-          Stop to add note at {formatTime(secondsElapsed)}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleTimeMarked}
+          sx={{ alignSelf: "flex-start", mt: 1.25 }}
+        >
+          Add new note
         </Button>
       </Stack>
 
@@ -248,13 +232,7 @@ export default function LearningVideo({ lesson, onEnded }) {
           There are no comments yet.
         </Typography>
       </TabPanel>
-
-      {/* <TabPanel value={tab} index={3}>
-        <Typography component="h2" variant="h6" fontWeight="bold">
-          There are no ratings yet.
-        </Typography>
-      </TabPanel> */}
-    </Box>
+    </Stack>
   );
 }
 

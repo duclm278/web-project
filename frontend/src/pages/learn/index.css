@@ -3,3 +3,54 @@
   font-size: 16px !important;
   font-family: "Menlo", "Consolas", '"Droid Sans Mono"', monospace !important;
 }
+
+/* react-quiz-component */
+.react-quiz-container {
+  max-width: 90%;
+  width: 720px;
+}
+
+.react-quiz-container .questionWrapper img {
+  padding: 16px;
+  border-radius: 32px;
+  max-width: 400px;
+}
+
+.react-quiz-container .questionWrapper button {
+  padding: 16px;
+  background-color: #f6f7f9;
+  border: none;
+  border-radius: 16px !important;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.react-quiz-container .questionWrapper button:hover {
+  filter: brightness(0.95);
+}
+
+.react-quiz-container .tag-container {
+  margin-bottom: 36px;
+}
+
+.react-quiz-container .tag-container span {
+  color: #333;
+  background-color: #f6f7f9 !important;
+  padding: 0.55rem 0.75rem !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 28px !important;
+}
+
+.react-quiz-container .correct {
+  background: #4caf50 !important;
+  color: white;
+}
+
+.react-quiz-container .incorrect {
+  background: #f44336 !important
+  color: white;
+}
+
+.react-quiz-container .alert {
+  border-radius: 16px !important;
+}
