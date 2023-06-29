@@ -19,6 +19,9 @@ router.get("/", async (req, res) => {
     escaped = escaped.split("\\ ").join(".*");
     query.$or = [{ [joined]: { $regex: escaped, $options: "i" } }];
   }
+  if (filter?.id) {
+    query._id = { $in: filter.id };
+  }
   let sort = null;
   if (req.query?.sort) {
     sort = JSON.parse(req.query?.sort);
@@ -40,7 +43,7 @@ router.get("/", async (req, res) => {
             [joined]: { $concat: ["$name", { $toString: "$_id" }] },
           },
         },
-        sort ? { $sort: sort } : {},
+        { $sort: sort ? sort : { createdAt: 1 } },
         { $match: query },
       ]);
     } else {
@@ -51,7 +54,7 @@ router.get("/", async (req, res) => {
       courses = await courseModel.aggregate([
         { $addFields: { [joined]: { $toString: "$_id" } } },
         { $match: query },
-        sort ? { $sort: sort } : {},
+        { $sort: sort ? sort : { createdAt: 1 } },
         { $sort: { studentsEnrolled: -1 } },
         { $limit: 5 },
       ]);
@@ -65,7 +68,8 @@ router.get("/", async (req, res) => {
       };
     });
     res.status(200).json(courses);
-  } catch {
+  } catch (err) {
+    console.log(err.message);
     res.status(500).json({ error: "Could not get courses" });
   }
 });
