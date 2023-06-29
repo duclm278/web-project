@@ -132,7 +132,7 @@ router.post("/", async (req, res) => {
     });
 
     const { courseId, index } = req.body;
-    if (courseId) await Lesson.moveLessonToCourseIndex(lesson, courseId, index);
+    if (courseId) await Lesson.moveLessonToCourseIndex(quiz, courseId, index);
 
     return res.status(201).json(quiz);
   } catch (err) {
