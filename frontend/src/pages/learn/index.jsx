@@ -7,6 +7,7 @@ import enrollService from "../../services/enroll";
 import progressService from "../../services/progress";
 import { formatTime } from "../../utils/formatter";
 import LearningList from "./LearningList";
+import LearningQuiz from "./LearningQuiz";
 import LearningVideo from "./LearningVideo";
 
 export default function Learning() {
@@ -34,11 +35,14 @@ export default function Learning() {
     }
   });
 
+  // Current lesson
+  const lesson = lessons.find((lesson) => lesson._id === currentLessonId);
+
+  // Check if user is enrolled in course
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     const token = user.token;
 
-    let course;
     const checkEnroll = async () => {
       try {
         await enrollService.getOne(token, courseId);
@@ -50,19 +54,28 @@ export default function Learning() {
 
     const fetchCourse = async () => {
       try {
-        course = await courseService.getOne(courseId);
+        const course = await courseService.getOne(courseId);
         setLessons(course.lessons);
       } catch (err) {
         console.log(err);
       }
     };
 
+    checkEnroll();
+    fetchCourse();
+  }, [courseId, navigate]);
+
+  // Fetch progress
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = user.token;
+
     const fetchProgress = async () => {
       try {
         const progress = await progressService.getOne(token, courseId);
         setCompletedLessons(progress.completedLessons);
         if (!progress.currentLesson) {
-          const firstLessonId = course.lessons?.[0]?._id;
+          const firstLessonId = lessons?.[0]._id;
           setCurrentLessonId(firstLessonId);
         } else {
           setCurrentLessonId(progress.currentLesson);
@@ -72,12 +85,10 @@ export default function Learning() {
       }
     };
 
-    checkEnroll();
-    fetchCourse();
     fetchProgress();
-  }, [courseId, navigate]);
+  }, [courseId, lessons]);
 
-  const handleOnEnded = async (lessonId) => {
+  const handleOnEnded = async (lessonId, delay) => {
     const user = JSON.parse(localStorage.getItem("user"));
     const token = user.token;
 
@@ -102,24 +113,34 @@ export default function Learning() {
         currentLesson: nextLessonId,
         completedLessons: completedLessonIds,
       });
-      setCurrentLessonId(progress.currentLesson);
-      setCompletedLessons(progress.completedLessons);
+      if (delay === 0) return;
+      setTimeout(() => {
+        setCurrentLessonId(progress.currentLesson);
+        setCompletedLessons(progress.completedLessons);
+      }, delay * 1000);
     } catch (err) {
       console.log(err);
     }
   };
 
-  console.log("completedLessons", completedLessons);
   return (
     <Box>
       <Header />
       <Stack direction="row" sx={{ height: "90vh" }}>
         <Stack maxWidth="lg" flex={3}>
           <Box sx={{ p: { xs: 1, md: 2 }, overflow: "auto" }}>
-            <LearningVideo
-              lesson={lessons.find((lesson) => lesson._id === currentLessonId)}
-              onEnded={() => handleOnEnded(currentLessonId)}
-            />
+            {lesson?.type === "video" && (
+              <LearningVideo
+                lesson={lesson}
+                onEnded={() => handleOnEnded(currentLessonId, 2)}
+              />
+            )}
+            {lesson?.type === "quiz" && (
+              <LearningQuiz
+                lesson={lesson}
+                onEnded={() => handleOnEnded(currentLessonId, 0)}
+              />
+            )}
           </Box>
         </Stack>
         <Divider orientation="vertical" sx={{ borderWidth: 1 }} />

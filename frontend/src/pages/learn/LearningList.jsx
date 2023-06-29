@@ -1,4 +1,5 @@
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import HelpIconIcon from "@mui/icons-material/Help";
 import {
   Checkbox,
   List,
@@ -81,10 +82,17 @@ export default function LearningList({
                 id={lesson.id}
                 primary={lesson.name}
                 secondary={
-                  <span style={{ display: "flex", alignItems: "center" }}>
-                    <PlayCircleIcon sx={{ fontSize: 13.5, mr: 0.5 }} />
-                    {formatTime(lesson.lengthSeconds)}
-                  </span>
+                  lesson.type === "video" ? (
+                    <span style={{ display: "flex", alignItems: "center" }}>
+                      <PlayCircleIcon sx={{ fontSize: 13.5, mr: 0.5 }} />
+                      {formatTime(lesson.lengthSeconds)}
+                    </span>
+                  ) : (
+                    <span style={{ display: "flex", alignItems: "center" }}>
+                      <HelpIconIcon sx={{ fontSize: 13.5, mr: 0.5 }} />
+                      {formatTime(lesson.lengthSeconds)}
+                    </span>
+                  )
                 }
                 onClick={() => handleWatch(lesson._id)}
               />
