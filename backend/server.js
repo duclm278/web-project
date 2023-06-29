@@ -10,6 +10,11 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+morgan.token("url", function (req, res) {
+  // Decode URI to get original URL (e.g. replace %20 with spaces)
+  // return decodeURI(req.originalUrl || req.url);
+  return decodeURIComponent(req.originalUrl || req.url);
+});
 app.use(morgan("dev"));
 
 const courseRouter = require("./routes/course");

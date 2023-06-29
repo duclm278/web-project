@@ -1,49 +1,98 @@
+// Quiz is Lesson of type "quiz".
 const router = require("express").Router();
+const Course = require("../models/Course");
 const Lesson = require("../models/Lesson");
-const Quiz = require("../models/Quiz");
 const requireAuth = require("../middleware/requireAuth");
-
-// Protect below routes
-router.use(requireAuth);
+const { escapeRegExp } = require("../utils/regex");
 
 router.get("/", async (req, res) => {
-  let quizzes = [];
+  let query = { type: "quiz" };
 
-  // Build query from req.query
-  const query = {};
-  if (req.query.lessonId) {
-    query.lessonId = req.query.lessonId;
+  // Required by react-admin
+  let filter = null;
+  if (req.query?.filter) {
+    filter = JSON.parse(req.query?.filter);
   }
-  quizzes = await Quiz.find(query).sort({ createdAt: -1 });
+  const joined = "tmpId";
+  if (filter?.q) {
+    // Search multiple words separated by space
+    let escaped = escapeRegExp(filter.q);
+    escaped = escaped.split("\\ ").join(".*");
+    query.$or = [{ [joined]: { $regex: escaped, $options: "i" } }];
+  }
+  if (filter?.id) {
+    query._id = { $in: filter.id };
+  }
+  let course = null;
+  if (filter?.courseId) {
+    try {
+      course = await Course.findById(filter.courseId);
+      query._id = { $in: course.lessons };
+    } catch (err) {
+      console.log(err.message);
+      res.status(500).json({ error: err.message });
+    }
+  }
+  let sort = null;
+  if (req.query?.sort) {
+    sort = JSON.parse(req.query?.sort);
+  }
+  if (sort) {
+    const [field, order] = sort;
+    sort = { [field]: order === "ASC" ? 1 : -1 };
+  }
 
-  res.header("Access-Control-Expose-Headers", "Content-Range");
-  res.header("Content-Range", `quizzes 0-20/${quizzes.length}`);
-  quizzes = quizzes.map((q) => {
-    return {
-      id: q._id,
-      ...q._doc,
-    };
-  });
-  res.status(200).json(quizzes);
+  try {
+    // let quizzes = await Lesson.find(query);
+    let quizzes = await Lesson.aggregate([
+      {
+        $addFields: {
+          [joined]: { $concat: ["$name", { $toString: "$_id" }] },
+        },
+      },
+      sort ? { $sort: sort } : {},
+      { $match: query },
+    ]);
+    res.header("Access-Control-Expose-Headers", "Content-Range");
+    res.header("Content-Range", `quizzes 0-20/${quizzes.length}`);
+    quizzes = quizzes.map((q) => {
+      return {
+        id: q._id,
+        ...q,
+      };
+    });
+    res.status(200).json(quizzes);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: "Could not get quizzes" });
+  }
 });
 
-router.get("/:quizId", async (req, res) => {
-  const { quizId } = req.params;
-  const quiz = await Quiz.findById(quizId);
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  const quiz = await Lesson.findById(id);
   if (!quiz) {
-    return res.status(404).json({ error: "Quiz not found" });
+    return res.status(404).json({ error: "Quiz lesson not found" });
   }
   res.status(200).json({ id: quiz._id, ...quiz._doc });
 });
 
+// Protect below routes
+router.use(requireAuth);
+
 router.post("/", async (req, res) => {
-  // Check if format is correct
-  const { quizTitle, quizSynopsis, questions } = req.body;
-  if (!quizTitle) {
-    return res.status(400).json({ error: "Quiz title required" });
+  // Check permissions
+  if (!req.user.isAdmin) {
+    return res.status(401).json({ error: "Unauthorized" });
   }
-  if (!quizSynopsis) {
-    return res.status(400).json({ error: "Quiz synopsis required" });
+
+  // Check if format is correct
+  const { name, description, questions } = req.body;
+  if (!name) {
+    return res.status(400).json({ error: "Quiz name required" });
+  }
+  if (!description) {
+    return res.status(400).json({ error: "Quiz description required" });
   }
   if (!questions) questions = [];
 
@@ -73,52 +122,58 @@ router.post("/", async (req, res) => {
     return q;
   });
 
-  // Create lesson
-  let lesson = null;
+  let quiz = null;
   try {
-    lesson = await Lesson.create({ type: "quiz" });
-  } catch (err) {
-    return res.status(400).json({ error: err.message });
-  }
-
-  try {
-    const quiz = await Quiz.create({
-      lessonId: lesson._id,
-      quizTitle,
-      quizSynopsis,
+    quiz = await Lesson.create({
+      name,
+      type: "quiz",
+      description,
       questions: parsedQuestions,
     });
+
+    const { courseId, index } = req.body;
+    if (courseId) await Lesson.moveLessonToCourseIndex(lesson, courseId, index);
+
     return res.status(201).json(quiz);
   } catch (err) {
-    // Delete lesson if quiz creation failed
-    await Lesson.findByIdAndDelete(lesson._id);
-    return res.status(400).json({ error: err.message });
+    console.log(err.message);
+    if (quiz) {
+      await Lesson.findByIdAndDelete(quiz._id);
+    }
+    res.status(400).json({ error: "Could not create quiz lesson" });
   }
 });
 
-router.delete("/:quizId", async (req, res) => {
-  const { quizId } = req.params;
-  const quiz = await Quiz.findOneAndDelete({ _id: quizId });
-  if (!quiz) {
-    return res.status(404).json({ error: "Quiz not found" });
+router.delete("/:id", async (req, res) => {
+  // Check permissions
+  if (!req.user.isAdmin) {
+    return res.status(401).json({ error: "Unauthorized" });
   }
 
-  // Delete lesson if quiz exist
-  const { lessonId } = quiz;
-  await Lesson.findByIdAndDelete(lessonId);
-
-  // Return quiz
-  res.status(200).json(quiz);
+  // Delete quiz lesson from lessons
+  const { id } = req.params;
+  const quiz = await Lesson.findByIdAndDelete(id);
+  if (!quiz) {
+    return res.status(404).json({ error: "Quiz lesson not found" });
+  }
+  // Remove lesson from course, use $pull
+  await Course.findOneAndUpdate({ lessons: id }, { $pull: { lessons: id } });
+  res.status(200).json({ id: quiz._id, ...quiz._doc });
 });
 
 // Accept JSON object
-router.patch("/:quizId", async (req, res) => {
-  const { quizId } = req.params;
-  const { quizTitle, quizSynopsis, questions } = req.body;
-  if (!quizTitle) {
+router.patch("/:id", async (req, res) => {
+  // Check permissions
+  if (!req.user.isAdmin) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  const { id } = req.params;
+  const { name, description, questions } = req.body;
+  if (!name) {
     return res.status(400).json({ error: "Quiz title required" });
   }
-  if (!quizSynopsis) {
+  if (!description) {
     return res.status(400).json({ error: "Quiz synopsis required" });
   }
   if (!questions) questions = [];
@@ -149,15 +204,24 @@ router.patch("/:quizId", async (req, res) => {
     return q;
   });
 
-  const quiz = await Quiz.findByIdAndUpdate(
-    quizId,
-    { quizTitle, quizSynopsis, questions: parsedQuestions },
-    { new: true }
-  );
-  if (!quiz) {
-    return res.status(404).json({ error: "Quiz not found" });
+  try {
+    const quiz = await Lesson.findByIdAndUpdate(
+      id,
+      { name, description, questions: parsedQuestions },
+      { new: true }
+    );
+    if (!quiz) {
+      return res.status(404).json({ error: "Quiz lesson not found" });
+    }
+
+    const { courseId, index } = req.body;
+    if (courseId) await Lesson.moveLessonToCourseIndex(lesson, courseId, index);
+
+    res.status(200).json({ id: quiz._id, ...quiz._doc });
+  } catch (err) {
+    console.log(err.message);
+    res.status(400).json({ error: "Could not update quiz lesson" });
   }
-  res.status(200).json(quiz);
 });
 
 module.exports = router;
