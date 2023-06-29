@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+const Course = require("./Course");
+const Question = require("./Question");
+
 const lessonSchema = Schema(
   {
     name: {
@@ -33,16 +36,30 @@ const lessonSchema = Schema(
     },
 
     // Quiz specific fields
-    questions: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Question",
-      },
-    ],
+    questions: [Question.schema],
   },
   { timestamps: true }
 );
 
 lessonSchema.index({ name: "text", description: "text" });
+lessonSchema.statics.moveLessonToCourseIndex = async function (
+  lesson,
+  courseId,
+  index
+) {
+  let course = null;
+  if (courseId) {
+    course = await Course.findById(courseId);
+    course.lessons.push(lesson._id);
+    await course.save();
+  }
+
+  // 1-indexed index
+  if (index) {
+    course?.lessons?.pop();
+    course?.lessons?.splice(index - 1, 0, lesson._id);
+    await course.save();
+  }
+};
 
 module.exports = mongoose.model("Lesson", lessonSchema);
