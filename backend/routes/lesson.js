@@ -53,7 +53,7 @@ router.get("/", async (req, res) => {
           [joined]: { $concat: ["$name", { $toString: "$_id" }] },
         },
       },
-      sort ? { $sort: sort } : {},
+      { $sort: sort ? sort : { createdAt: 1 } },
       { $match: query },
     ]);
     res.header("Access-Control-Expose-Headers", "Content-Range");
