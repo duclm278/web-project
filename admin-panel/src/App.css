@@ -35,6 +35,11 @@ img {
   height: auto;
 }
 
+/* Toolbar */
+.RaList-actions {
+  margin: 0.5rem 0 1rem;
+}
+
 /* ArrayInput */
 .RaSimpleFormIterator-list {
   display: flex;
