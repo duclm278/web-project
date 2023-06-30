@@ -2,7 +2,6 @@ import { Box, Divider, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/Header";
-import { useAuthContext } from "../../hooks/useAuthContext";
 import courseService from "../../services/course";
 import enrollService from "../../services/enroll";
 import progressService from "../../services/progress";
@@ -12,7 +11,6 @@ import LearningQuiz from "./LearningQuiz";
 import LearningVideo from "./LearningVideo";
 
 export default function Learning() {
-  const { user } = useAuthContext();
   const { courseId } = useParams();
   const [lessons, setLessons] = useState([]);
   const [currentLessonId, setCurrentLessonId] = useState(null);
@@ -42,6 +40,7 @@ export default function Learning() {
 
   // Check if user is enrolled in course
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
     const token = user.token;
 
     const checkEnroll = async () => {
@@ -57,20 +56,6 @@ export default function Learning() {
       try {
         const course = await courseService.getOne(courseId);
         setLessons(course.lessons);
-        // setCurrentLessonId(course.lessons[0]._id);
-        // setCurrentLessonId(course.lessons[0]._id);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    const fetchProgress = async () => {
-      try {
-        const progress = await progressService.getOne(token, courseId);
-        setCompletedLessons(progress.completedLessons);
-        if (!progress.currentLesson) {
-          setCurrentLessonId(progress.currentLesson);
-        }
       } catch (err) {
         console.log(err);
       }
@@ -78,11 +63,33 @@ export default function Learning() {
 
     checkEnroll();
     fetchCourse();
+  }, [courseId, navigate]);
+
+  // Fetch progress
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = user.token;
+
+    const fetchProgress = async () => {
+      try {
+        const progress = await progressService.getOne(token, courseId);
+        setCompletedLessons(progress.completedLessons);
+        if (!progress.currentLesson) {
+          const firstLessonId = lessons?.[0]._id;
+          setCurrentLessonId(firstLessonId);
+        } else {
+          setCurrentLessonId(progress.currentLesson);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     fetchProgress();
-    // }, [courseId, currentLessonId, navigate, user.token]);
-  }, [courseId, navigate, user.token]);
+  }, [courseId, lessons]);
 
   const handleOnEnded = async (lessonId, delay) => {
+    const user = JSON.parse(localStorage.getItem("user"));
     const token = user.token;
 
     // Mark lesson as completed if not already
