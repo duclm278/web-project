@@ -2,6 +2,7 @@ import { Box, Button, Stack, Tab, Tabs, Typography } from "@mui/material";
 import Linkify from "linkify-react";
 import React, { useEffect, useRef, useState } from "react";
 import Quiz from "react-quiz-component";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import noteService from "../../services/note";
 import { NoteCreate } from "./NoteCreate";
 import { NoteRead } from "./NoteRead";
@@ -9,6 +10,7 @@ import { NoteUpdate } from "./NoteUpdate";
 import "./index.css";
 
 export default function LearningQuiz({ lesson, onEnded }) {
+  const { user } = useAuthContext();
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState(0);
   const [notes, setNotes] = useState([]);
@@ -17,7 +19,6 @@ export default function LearningQuiz({ lesson, onEnded }) {
 
   useEffect(() => {
     if (!lesson) return;
-    const user = JSON.parse(localStorage.getItem("user"));
     const token = user.token;
     const fetchNotes = async () => {
       setLoading(true);
@@ -63,7 +64,6 @@ export default function LearningQuiz({ lesson, onEnded }) {
   };
 
   const handleNoteCreate = async () => {
-    const user = JSON.parse(localStorage.getItem("user"));
     const token = user.token;
     setLoading(true);
     try {
@@ -82,7 +82,6 @@ export default function LearningQuiz({ lesson, onEnded }) {
   };
 
   const handleNoteDelete = async (noteId) => {
-    const user = JSON.parse(localStorage.getItem("user"));
     const token = user.token;
     setLoading(true);
     try {
@@ -112,7 +111,6 @@ export default function LearningQuiz({ lesson, onEnded }) {
 
   const handleNoteEditSubmit = async (noteId) => {
     console.log("Submitting note", noteId);
-    const user = JSON.parse(localStorage.getItem("user"));
     const token = user.token;
     setLoading(true);
     try {

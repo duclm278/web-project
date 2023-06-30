@@ -2,6 +2,7 @@ import { Box, Button, Stack, Tab, Tabs, Typography } from "@mui/material";
 import Linkify from "linkify-react";
 import React, { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import noteService from "../../services/note";
 import { formatTime } from "../../utils/formatter";
 import { NoteCreate } from "./NoteCreate";
@@ -10,6 +11,7 @@ import { NoteUpdate } from "./NoteUpdate";
 import "./index.css";
 
 export default function LearningVideo({ lesson, onEnded }) {
+  const { user } = useAuthContext();
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState(0);
   const [playing, setPlaying] = useState(true);
@@ -23,7 +25,6 @@ export default function LearningVideo({ lesson, onEnded }) {
 
   useEffect(() => {
     if (!lesson) return;
-    const user = JSON.parse(localStorage.getItem("user"));
     const token = user.token;
     const fetchNotes = async () => {
       setLoading(true);
@@ -71,7 +72,6 @@ export default function LearningVideo({ lesson, onEnded }) {
   };
 
   const handleNoteCreate = async () => {
-    const user = JSON.parse(localStorage.getItem("user"));
     const token = user.token;
     setLoading(true);
     try {
@@ -90,7 +90,6 @@ export default function LearningVideo({ lesson, onEnded }) {
   };
 
   const handleNoteDelete = async (noteId) => {
-    const user = JSON.parse(localStorage.getItem("user"));
     const token = user.token;
     setLoading(true);
     try {
@@ -120,7 +119,6 @@ export default function LearningVideo({ lesson, onEnded }) {
 
   const handleNoteEditSubmit = async (noteId) => {
     console.log("Submitting note", noteId);
-    const user = JSON.parse(localStorage.getItem("user"));
     const token = user.token;
     setLoading(true);
     try {

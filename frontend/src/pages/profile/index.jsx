@@ -1,14 +1,15 @@
 import { Avatar, Box, Container, Grid, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import enrollService from "../../services/enroll";
 import { ProfileForm } from "./ProfileForm";
 
 // Profile shows basic user information and a list of joined courses
 export default function Profile() {
+  const { user } = useAuthContext();
   const [joinedCourses, setJoinedCourses] = useState([]);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
     const token = user.token;
 
     const request = async () => {
@@ -52,8 +53,7 @@ export default function Profile() {
                 fontWeight="bold"
                 align="center"
               >
-                {JSON.parse(localStorage.getItem("user")).firstName}{" "}
-                {JSON.parse(localStorage.getItem("user")).lastName}
+                {user.firstName} {user.lastName}
               </Typography>
             </Box>
           </Grid>

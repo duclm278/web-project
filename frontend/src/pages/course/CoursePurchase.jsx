@@ -1,21 +1,22 @@
 import {
+  Box,
+  Button,
   Card,
   CardContent,
   CardMedia,
   Typography,
-  Button,
-  Box,
 } from "@mui/material";
 import PropTypes from "prop-types";
-import { formatPrice } from "../../utils/formatter";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import cartService from "../../services/cart";
 import enrollService from "../../services/enroll";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { formatPrice } from "../../utils/formatter";
 
 export default function CoursePurchase(props) {
+  const { user } = useAuthContext();
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
   const [bought, setBought] = useState(false);
 
   useEffect(() => {

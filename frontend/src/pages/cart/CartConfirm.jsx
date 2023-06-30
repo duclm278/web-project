@@ -1,18 +1,20 @@
-import { Card, CardContent, Box, Typography, Button } from "@mui/material";
-import PropTypes from "prop-types";
-import { formatPrice } from "../../utils/formatter";
-import StripeCheckout from "react-stripe-checkout";
-import { useState, useEffect } from "react";
+import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import axios from "axios";
-import enrollService from "../../services/enroll";
-import cartService from "../../services/cart";
+import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import StripeCheckout from "react-stripe-checkout";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import cartService from "../../services/cart";
+import enrollService from "../../services/enroll";
+import { formatPrice } from "../../utils/formatter";
 
 const BASE_URL =
   import.meta.env.VITE_APP_BASE_URL || "http://localhost:3001/api";
 const STRIPE_KEY = import.meta.env.VITE_STRIPE_KEY || "";
 
 export default function CartConfirm(props) {
+  const { user } = useAuthContext();
   const [stripeToken, setStripeToken] = useState(null);
   const amount = props.cart?.subtotal ?? 0;
   const navigate = useNavigate();
@@ -29,8 +31,6 @@ export default function CartConfirm(props) {
           tokenId: stripeToken?.id,
           amount: amount,
         });
-
-        const user = JSON.parse(localStorage.getItem("user"));
 
         for (const course of props.cart.items) {
           await enrollService.enroll(user.token, {

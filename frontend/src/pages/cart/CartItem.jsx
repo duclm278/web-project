@@ -1,18 +1,19 @@
 import { Box, Button, Grid, Rating, Typography } from "@mui/material";
 import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
-import courseService from "../../services/course";
+import { useEffect, useState } from "react";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import cartService from "../../services/cart";
+import courseService from "../../services/course";
 import ratingService from "../../services/rating";
 import { formatPrice } from "../../utils/formatter";
 
-//TODO: rating
+//TODO: Rating
 export default function CartItem(props) {
+  const { user } = useAuthContext();
   const [course, setCourse] = useState({});
   const [rating, setRating] = useState(0);
   const removeFromCart = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
       await cartService.removeFromCart(
         user._id,
         course.id,

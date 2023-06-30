@@ -19,6 +19,7 @@ import Typography from "@mui/material/Typography";
 import { alpha, styled } from "@mui/material/styles";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const pages = [
   { title: "Home", path: "/" },
@@ -27,7 +28,7 @@ const pages = [
 
 const settings = [
   { title: "Profile", path: "/profile" },
-  { title: "Settings", path: "/settings" },
+  { title: "Account", path: "/account" },
   { title: "Help", path: "/help" },
   { title: "Logout", path: "/logout" },
 ];
@@ -73,12 +74,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function ResponsiveAppBar() {
+  const { user } = useAuthContext();
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
-
-  const user = localStorage.getItem("user");
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -271,11 +271,7 @@ function ResponsiveAppBar() {
               <Tooltip title="Settings">
                 <IconButton onClick={handleOpenUserMenu}>
                   <Avatar
-                    alt={
-                      JSON.parse(localStorage.getItem("user")).firstName +
-                      " " +
-                      JSON.parse(localStorage.getItem("user")).lastName
-                    }
+                    alt={user.firstName + " " + user.lastName}
                     src="#"
                     sx={{ width: 32, height: 32 }}
                   />

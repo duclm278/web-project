@@ -1,19 +1,20 @@
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CartItem from "./CartItem";
-import CartConfirm from "./CartConfirm";
-import cartService from "../../services/cart";
-import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import cartService from "../../services/cart";
+import CartConfirm from "./CartConfirm";
+import CartItem from "./CartItem";
 
 export default function Cart() {
+  const { user } = useAuthContext();
   const [cart, setCart] = useState(null);
   const navigate = useNavigate();
 
   async function fetchCart() {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
       const data = await cartService.getUserCart(user._id, user.token);
       setCart(data);
     } catch (e) {

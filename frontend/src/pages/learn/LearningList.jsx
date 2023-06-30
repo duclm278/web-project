@@ -1,5 +1,5 @@
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import HelpIconIcon from "@mui/icons-material/Help";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import {
   Checkbox,
   List,
@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useParams } from "react-router-dom";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import progressService from "../../services/progress";
 import { formatTime } from "../../utils/formatter";
 
@@ -20,10 +21,10 @@ export default function LearningList({
   currentLessonId,
   setCurrentLessonId,
 }) {
+  const { user } = useAuthContext();
   const { courseId } = useParams();
 
   const handleWatch = async (lessonId) => {
-    const user = JSON.parse(localStorage.getItem("user"));
     const token = user.token;
     try {
       await progressService.update(token, courseId, {
@@ -46,7 +47,6 @@ export default function LearningList({
 
     const request = async () => {
       try {
-        const user = JSON.parse(localStorage.getItem("user"));
         const token = user.token;
         const progress = await progressService.update(token, courseId, {
           currentLesson: currentLessonId,

@@ -22,6 +22,9 @@ router.post("/", async (req, res) => {
   // Use lessonModel to create new lesson
   // Store array of lesson ids in course.lessons
   let lessons = [];
+  if (!course?.lessons) {
+    return res.status(400).json({ error: "No lessons found" });
+  }
   for (const lesson of course.lessons) {
     try {
       const result = await lessonModel.create(lesson);

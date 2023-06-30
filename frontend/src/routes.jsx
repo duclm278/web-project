@@ -1,10 +1,10 @@
 import { Navigate, useRoutes } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
 import NotFound from "./pages/404";
+import Homepage from "./pages/HomePages/HomePage";
 import Cart from "./pages/cart";
 import Checkout from "./pages/checkout";
 import Course from "./pages/course";
-import Home from "./pages/home";
 import Learning from "./pages/learn";
 import Login from "./pages/login";
 import Logout from "./pages/logout";
@@ -18,11 +18,11 @@ export default function Router() {
   const routes = useRoutes([
     {
       path: "/",
-      element: <Home />,
+      element: <Homepage />,
     },
     {
       path: "/home",
-      element: <Home />,
+      element: <Homepage />,
     },
     {
       path: "/search",

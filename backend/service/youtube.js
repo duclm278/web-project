@@ -36,12 +36,15 @@ const getCourseDetails = async (playlistID) => {
       for (let video of items) {
         const id = video.snippet.resourceId.videoId;
         const vid = await getVideoDetails(id);
+        if (!vid) {
+          continue;
+        }
         videos.push({
-          name: vid.snippet.title,
+          name: vid.snippet?.title || "Untitled Lesson",
           type: "video",
           lengthSeconds: ISO8601toSeconds(vid.contentDetails.duration),
           videoUrl: `https://youtu.be/${id}`,
-          description: vid.snippet.description,
+          description: vid.snippet?.description,
         });
       }
       nextPageToken = token;

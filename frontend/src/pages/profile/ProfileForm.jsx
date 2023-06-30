@@ -1,8 +1,9 @@
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { useEffect, useState } from "react";
 import moment from "moment";
+import { useEffect, useState } from "react";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import userService from "../../services/user";
 
 const readOnlyStyle = {
@@ -22,15 +23,14 @@ function newEmptyFormData() {
 }
 
 export function ProfileForm() {
+  const { user } = useAuthContext();
   const [readOnly, setReadOnly] = useState(true);
   const [formData, setFormData] = useState(newEmptyFormData);
   const [editId, setEditId] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
     const token = user.token;
-
     const request = async () => {
       try {
         const data = await userService.getProfile(token);
@@ -41,7 +41,7 @@ export function ProfileForm() {
     };
 
     request();
-  }, []);
+  }, [user.token]);
 
   const handleFormChange = (...args) => {
     let fieldName = null;
