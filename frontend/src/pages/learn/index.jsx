@@ -58,6 +58,7 @@ export default function Learning() {
         const course = await courseService.getOne(courseId);
         setLessons(course.lessons);
         // setCurrentLessonId(course.lessons[0]._id);
+        // setCurrentLessonId(course.lessons[0]._id);
       } catch (err) {
         console.log(err);
       }
