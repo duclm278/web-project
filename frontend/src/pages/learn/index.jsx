@@ -57,7 +57,7 @@ export default function Learning() {
       try {
         const course = await courseService.getOne(courseId);
         setLessons(course.lessons);
-        setCurrentLessonId(course.lessons[0]._id);
+        // setCurrentLessonId(course.lessons[0]._id);
       } catch (err) {
         console.log(err);
       }
@@ -78,7 +78,8 @@ export default function Learning() {
     checkEnroll();
     fetchCourse();
     fetchProgress();
-  }, [courseId, currentLessonId, navigate, user.token]);
+    // }, [courseId, currentLessonId, navigate, user.token]);
+  }, [courseId, navigate, user.token]);
 
   const handleOnEnded = async (lessonId, delay) => {
     const token = user.token;

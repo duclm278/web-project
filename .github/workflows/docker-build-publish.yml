@@ -11,7 +11,7 @@ on:
       - "main"
 
 jobs:
-  build-and-publish:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -30,16 +30,69 @@ jobs:
         with:
           context: ./backend
           push: true
-          tags: dungnt07/web_project_backend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/web_project_backend:latest
       - name: Build and push frontend image
         uses: docker/build-push-action@v2
         with:
           context: ./frontend
           push: true
-          tags: dungnt07/web_project_frontend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/web_project_frontend:latest
       - name: Build and push admin-panel image
         uses: docker/build-push-action@v2
         with:
           context: ./admin-panel
           push: true
-          tags: dungnt07/web_project_admin:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/web_project_admin:latest
+
+  # pull-and-up:
+  #   runs-on: ubuntu-latest
+  #   needs: build-and-push
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+  #     - name: Create .env file from secrets
+  #       run: |
+  #         echo "${{ secrets.FRONTEND_ENV }}" > frontend.env
+  #         echo "${{ secrets.BACKEND_ENV }}" > backend.env
+  #         echo "${{ secrets.ADMIN_ENV }}" > admin.env
+  #     - name: Copy frontend.env
+  #       uses: appleboy/scp-action@master
+  #       with:
+  #         host: ${{ secrets.HOST }}
+  #         username: ${{ secrets.USERNAME }}
+  #         key: ${{ secrets.PRIVATE_KEY }}
+  #         source: "frontend.env"
+  #         target: ${{ secrets.PATH }}
+  #     - name: Copy backend.env
+  #       uses: appleboy/scp-action@master
+  #       with:
+  #         host: ${{ secrets.HOST }}
+  #         username: ${{ secrets.USERNAME }}
+  #         key: ${{ secrets.PRIVATE_KEY }}
+  #         source: "backend.env"
+  #         target: ${{ secrets.PATH }}
+  #     - name: Copy admin.env
+  #       uses: appleboy/scp-action@master
+  #       with:
+  #         host: ${{ secrets.HOST }}
+  #         username: ${{ secrets.USERNAME }}
+  #         key: ${{ secrets.PRIVATE_KEY }}
+  #         source: "admin.env"
+  #         target: ${{ secrets.PATH }}
+  #     - name: Copy docker-compose.yml
+  #       uses: appleboy/scp-action@master
+  #       with:
+  #         host: ${{ secrets.HOST }}
+  #         username: ${{ secrets.USERNAME }}
+  #         key: ${{ secrets.PRIVATE_KEY }}
+  #         source: "docker-compose.yml"
+  #         target: ${{ secrets.PATH }}
+  #     - uses: appleboy/ssh-action@master
+  #       name: Pull new image and rerun with the new version
+  #       with:
+  #         host: ${{ secrets.HOST }}
+  #         username: ${{ secrets.USERNAME }}
+  #         key: ${{ secrets.PRIVATE_KEY }}
+  #         script: |
+  #           cd ${{ secrets.PATH }}
+  #           docker compose pull && docker compose down && docker compose up -d

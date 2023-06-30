@@ -2,26 +2,38 @@ version: '3'
 
 services:
   backend:
+    restart: unless-stopped
     image: dungnt07/web_project_backend
+    networks:
+      - app
     ports:
       - 3001:3001
     env_file:
-      - backend.env
+      - ./backend.env
     
   frontend:
+    restart: unless-stopped
     image: dungnt07/web_project_frontend
+    networks:
+      - app
     ports:
       - 5173:5173
     env_file:
-      - frontend.env
+      - ./frontend.env
     depends_on:
       - backend
 
   admin-panel:
+    restart: unless-stopped
     image: dungnt07/web_project_admin
+    networks:
+      - app
     ports:
-      - 4000:4000
+      - 4001:4000
     env_file:
-      - admin.env
+      - ./admin.env
     depends_on:
       - backend
+
+networks:
+  app:
